@@ -36,5 +36,16 @@ void main() {
       store.dispatch(JournalDeleteAction(e9));
       expect(store.state.journalEntries.length, 9);
     });
+    test("3", () {
+      final store = new Store<JournalState>(journalReducer,
+          initialState: JournalState(journalEntries: [e0, e1, e2, e3, e4, e5, e6, e7, e8, e9]),
+          middleware: []);
+      final JournalEntry new_e9 = JournalEntry("9", "new e9", DateTime(2019, 5, 29, 20, 7, 0), null);
+      expect(store.state.journalEntries[9].act, "study Japanese");
+      store.dispatch(JournalModifyAction(new_e9));
+      expect(store.state.journalEntries.length, 10);
+      expect(store.state.journalEntries[9].act, "new e9");
+      expect(store.state.journalEntries[9].endTimestamp, null);
+    });
   });
 }

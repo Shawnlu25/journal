@@ -81,6 +81,11 @@ class JournalEntry implements Comparable<JournalEntry>{
 
   // ============= Other methods ==============
 
+  @override
+  int get hashCode {
+    return id.hashCode;
+  }
+
   JournalEntryState getState() {
     final now = new DateTime.now();
 

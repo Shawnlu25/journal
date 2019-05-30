@@ -50,6 +50,6 @@ JournalState _onJournalDelete(JournalState state, JournalDeleteAction action) {
 
 JournalState _onJournalModify(JournalState state, JournalModifyAction action) {
   List<JournalEntry> journalEntries = state.journalEntries;
-  journalEntries[journalEntries.indexOf(action.entry)] = action.entry;
+  journalEntries[journalEntries.indexOf(journalEntries.firstWhere((e) => e.id == action.entry.id))] = action.entry;
   return JournalState(journalEntries: journalEntries);
 }
