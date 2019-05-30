@@ -22,4 +22,23 @@ void main() {
       expect(e.getState(), JournalEntryState.InProgress);
     });
   });
+
+  group("Test compareTo", (){
+    test("Entries with the same start & end timestamps should compare on act", () {
+      JournalEntry e1 = JournalEntry.createEntry(currentTime);
+      JournalEntry e2 = JournalEntry.createEntry(currentTime);
+      e1.act = "A";
+      e2.act = "B";
+      expect(e1.compareTo(e2) < 0, true);
+    });
+
+    test("Entries with the same start timestamp should compare on end timestamps", () {
+      JournalEntry e1 = JournalEntry.createEntry(currentTime);
+      JournalEntry e2 = JournalEntry.createEntry(currentTime);
+      e1.endTimestamp = tenMinutesBeforeCurrent;
+      e2.endTimestamp = null;
+      expect(e1.compareTo(e2) < 0, true);
+      expect(e1.endTimestamp, currentTime);
+    });
+  });
 }

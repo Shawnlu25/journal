@@ -44,7 +44,7 @@ class JournalEntry implements Comparable<JournalEntry>{
   DateTime get endTimestamp => _endTimestamp;
 
   set endTimestamp(DateTime value) {
-    if (value.isBefore(startTimestamp)) {
+    if (value != null && value.isBefore(startTimestamp)) {
       _endTimestamp = startTimestamp;
     } else {
       _endTimestamp = value;
@@ -61,8 +61,7 @@ class JournalEntry implements Comparable<JournalEntry>{
     if (endTimestamp != null) {
       if (e.endTimestamp == null) {
         return -1;
-      }
-      if (endTimestamp.compareTo(e.endTimestamp) != 0) {
+      } else if (endTimestamp.compareTo(e.endTimestamp) != 0) {
         return endTimestamp.compareTo(e.endTimestamp);
       }
     } else if (e.endTimestamp != null){
