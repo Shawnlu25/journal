@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:journal/models/record_time.dart';
-import 'package:flutter_sticky_header/flutter_sticky_header.dart';
+import 'package:sticky_headers/sticky_headers.dart';
 import './widgets/activity_overview.dart';
 
 final List<Map<String, dynamic>> fakeData = [
@@ -50,6 +49,16 @@ final List<Map<String, dynamic>> fakeData = [
     "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
   },
   {
+    "title": "在办公室工作 10",
+    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
+  },
+  {
+    "title": "在办公室工作 11",
+    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
+  },
+  {
     "title": "在办公室工作 1",
     "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
     "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
@@ -94,6 +103,16 @@ final List<Map<String, dynamic>> fakeData = [
     "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
     "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
   },
+  {
+    "title": "在办公室工作 10",
+    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
+  },
+  {
+    "title": "在办公室工作 11",
+    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
+  },
 ];
 
 main() => runApp(MaterialApp(
@@ -113,10 +132,26 @@ main() => runApp(MaterialApp(
       ),
     ));
 
-class MyHomePage extends StatelessWidget {
-  List<Widget> _buildOverviewList() {
+class MyHomePage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _MyHomePageState();
+  }
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  Widget _buildOverviewList() {
     var groups = [];
-    fakeData.forEach((data) {
+    fakeData.reversed.toList().forEach((data) {
       var startTime = DateTime.fromMillisecondsSinceEpoch(data["startTime"]);
       if (groups.isNotEmpty) {
         var lastStartTime = DateTime.fromMillisecondsSinceEpoch(
@@ -134,58 +169,63 @@ class MyHomePage extends StatelessWidget {
       }
     });
 
-    return groups.map((records) {
-      return SliverStickyHeaderBuilder(
-          overlapsContent: true,
-          builder: (context, state) {
-            return Container(
-              color: Colors.transparent,
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                        ActivityOverview.WeekdayMap[
-                            DateTime.fromMillisecondsSinceEpoch(
-                                    records[0]["startTime"])
-                                .weekday],
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                            fontSize: 12, fontWeight: FontWeight.w300)),
-                    Text(
-                      //startTime.day.toString(),
-                      DateTime.fromMillisecondsSinceEpoch(
-                              records[0]["startTime"])
-                          .day
-                          .toString(),
-                      textAlign: TextAlign.center,
+    print("Enter here");
+    var list = groups.map((records) {
+      return StickyHeader(
+          overlapHeaders: true,
+          header: Container(
+            color: Colors.transparent,
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                      ActivityOverview.WeekdayMap[
+                          DateTime.fromMillisecondsSinceEpoch(
+                                  records[0]["startTime"])
+                              .weekday],
+                      textAlign: TextAlign.left,
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-          sliver: new SliverList(
-            delegate: new SliverChildBuilderDelegate(
-              (context, i) {
-                return Padding(
-                  padding: EdgeInsets.only(left: 8, right: 8),
-                  child: ActivityOverview(
-                    title: records[i]["title"],
-                    startTime: DateTime.fromMillisecondsSinceEpoch(
-                        records[i]["startTime"]),
-                    endTime: DateTime.fromMillisecondsSinceEpoch(
-                        records[i]["endTime"]),
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w300)),
+                  Text(
+                    //startTime.day.toString(),
+                    DateTime.fromMillisecondsSinceEpoch(records[0]["startTime"])
+                        .day
+                        .toString(),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
                   ),
-                );
-              },
-              childCount: records.length,
+                ],
+              ),
             ),
+          ),
+
+          // header: Text("Hi"),
+
+          content: Column(
+            children: List.generate(records.length, (j) {
+              var i = records.length - 1 - j;
+              return Padding(
+                padding: EdgeInsets.only(left: 8, right: 8),
+                child: ActivityOverview(
+                  title: records[i]["title"],
+                  startTime: DateTime.fromMillisecondsSinceEpoch(
+                      records[i]["startTime"]),
+                  endTime: DateTime.fromMillisecondsSinceEpoch(
+                      records[i]["endTime"]),
+                ),
+              );
+            }),
           ));
     }).toList();
+    return ListView.builder(
+      reverse: true,
+      itemBuilder: (_, i) {
+        return list[i];
+      },
+      itemCount: list.length,
+    );
   }
 
   @override
@@ -194,8 +234,11 @@ class MyHomePage extends StatelessWidget {
         appBar: AppBar(
           title: Text("点点时刻しました"),
         ),
-        body: CustomScrollView(
+        /*body: CustomScrollView(
+          reverse: true,
+          controller: _scrollController,
           slivers: this._buildOverviewList(),
-        ));
+        )*/
+        body: this._buildOverviewList());
   }
 }
