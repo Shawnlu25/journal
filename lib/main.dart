@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:journal/widgets/modifier.dart';
 import 'package:sticky_headers/sticky_headers.dart';
+import 'package:flutter/services.dart';
 import './widgets/activity_overview.dart';
 
 final List<Map<String, dynamic>> fakeData = [
@@ -115,22 +117,29 @@ final List<Map<String, dynamic>> fakeData = [
   },
 ];
 
-main() => runApp(MaterialApp(
-      home: MyHomePage(),
-      theme: ThemeData(
-        brightness: Brightness.light,
-        //primaryColor: Color.fromRGBO(59, 66, 84, 1),
-        //scaffoldBackgroundColor: Color.fromRGBO(59, 66, 84, 1),
-        //accentColor: Colors.cyan[600],
-        //backgroundColor: Colors.lightBlue[800],
-        //cardTheme: CardTheme(color: Color.fromRGBO(84, 92, 110, 1)),
-        textTheme: TextTheme(
-          headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-          title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-          body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
-        ),
+main() {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.white,
+    systemNavigationBarIconBrightness: Brightness.dark,
+    // statusBarColor: Colors.pink,
+  ));
+  runApp(MaterialApp(
+    home: MyHomePage(),
+    theme: ThemeData(
+      brightness: Brightness.light,
+      //primaryColor: Color.fromRGBO(59, 66, 84, 1),
+      //scaffoldBackgroundColor: Color.fromRGBO(59, 66, 84, 1),
+      //accentColor: Colors.cyan[600],
+      //backgroundColor: Colors.lightBlue[800],
+      //cardTheme: CardTheme(color: Color.fromRGBO(84, 92, 110, 1)),
+      textTheme: TextTheme(
+        headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+        title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+        body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
       ),
-    ));
+    ),
+  ));
+}
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -169,7 +178,6 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     });
 
-    print("Enter here");
     var list = groups.map((records) {
       return StickyHeader(
           overlapHeaders: true,
@@ -231,9 +239,12 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("点点时刻しました"),
-        ),
-        body: this._buildOverviewList());
+      // resizeToAvoidBottomInset: true,
+      appBar: AppBar(
+        title: Text("点点时刻しました"),
+      ),
+      body: this._buildOverviewList(),
+      bottomSheet: Modifier(),
+    );
   }
 }
