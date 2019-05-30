@@ -14,7 +14,11 @@ class JournalEntry implements Comparable<JournalEntry>{
 
   // =========== Constructors ============
   // Default Constructor
-  JournalEntry(this._id, this._act, this._startTimestamp, this._endTimestamp);
+  JournalEntry(this._id, this._act, this._startTimestamp, this._endTimestamp) {
+    if (_endTimestamp != null && _endTimestamp.isBefore(_startTimestamp)) {
+      _endTimestamp = _startTimestamp;
+    }
+  }
 
   // Constructor for creating a new entry
   JournalEntry.createEntry(DateTime startTimestamp) {

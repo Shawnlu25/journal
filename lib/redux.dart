@@ -7,7 +7,7 @@ class JournalState {
   JournalState({
     this.journalEntries,
   });
-  
+
 }
 
 // ========== Actions ==========
@@ -37,16 +37,19 @@ final journalReducer = combineReducers<JournalState>([
 ]);
 
 JournalState _onJournalAdd(JournalState state, JournalAddAction action) {
-  // TODO
-  return state;
+  List<JournalEntry> journalEntries = state.journalEntries;
+  journalEntries.add(action.newEntry);
+  return JournalState(journalEntries: journalEntries);
 }
 
 JournalState _onJournalDelete(JournalState state, JournalDeleteAction action) {
-  // TODO
-  return state;
+  List<JournalEntry> journalEntries = state.journalEntries;
+  journalEntries.remove(action.entry);
+  return JournalState(journalEntries: journalEntries);
 }
 
 JournalState _onJournalModify(JournalState state, JournalModifyAction action) {
-  // TODO
-  return state;
+  List<JournalEntry> journalEntries = state.journalEntries;
+  journalEntries[journalEntries.indexOf(action.entry)] = action.entry;
+  return JournalState(journalEntries: journalEntries);
 }
