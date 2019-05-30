@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 import './widgets/activity_overview.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 
 final List<Map<String, dynamic>> fakeData = [
   {

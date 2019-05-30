@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:journal/models/record_time.dart';
 
 class ActivityOverview extends StatelessWidget {
   final String title;
   final DateTime startTime;
   final DateTime endTime;
 
-  static final WeekdayMap = {
+  static const WeekdayMap = {
     1: "Mon",
     2: "Tue",
     3: "Wed",

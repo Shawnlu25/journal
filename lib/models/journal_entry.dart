@@ -3,14 +3,13 @@ import 'package:uuid/uuid.dart';
 
 enum JournalEntryState { Past, InProgress, Future }
 
-class JournalEntry implements Comparable<JournalEntry>{
+class JournalEntry implements Comparable<JournalEntry> {
   String _id;
   String _act;
   DateTime _startTimestamp;
   DateTime _endTimestamp;
   //List<Tag> tags;
   //String description;
-
 
   // =========== Constructors ============
   // Default Constructor
@@ -68,7 +67,7 @@ class JournalEntry implements Comparable<JournalEntry>{
       } else if (endTimestamp.compareTo(e.endTimestamp) != 0) {
         return endTimestamp.compareTo(e.endTimestamp);
       }
-    } else if (e.endTimestamp != null){
+    } else if (e.endTimestamp != null) {
       return 1;
     }
 
@@ -103,5 +102,4 @@ class JournalEntry implements Comparable<JournalEntry>{
   Duration getDuration() {
     return this._endTimestamp?.difference(this._startTimestamp);
   }
-
 }
