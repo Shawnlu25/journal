@@ -4,7 +4,7 @@ import 'package:journal/models/tag.dart';
 enum JournalEntryState { Past, InProgress, Future }
 
 class JournalEntry {
-  String id;
+  String _id;
   String act;
   DateTime startTimestamp;
   DateTime endTimestamp;
@@ -12,8 +12,15 @@ class JournalEntry {
   String description;
 
   JournalEntry(DateTime startTimestamp) {
-    this.id = Uuid().v4();
+    this._id = Uuid().v4();
+    this.act = "";
+    this.description = "";
     this.startTimestamp = startTimestamp;
+    this.tags = new List<Tag>();
+  }
+
+  String id() {
+    return this._id;
   }
 
   JournalEntryState getState() {
