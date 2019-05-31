@@ -30,20 +30,20 @@ class _JournalEditRouteState extends State<JournalEditRoute> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              TiledTimeDisplay(
+                dateTime: DateTime.now(),
+                flex: 3,
+              ),
+              TiledTimeDisplay(
+                dateTime: DateTime.now().add(Duration(minutes: 20, hours: 30, days: 8)),
+                flex: 3,
+              ),
               Expanded(
                 flex: 1,
                 child: Container(
+                  width: 48,
+                  height: 48,
                   color: Colors.white,
-                  height: 48.0,
-                  width: 48.0,
-                ),
-              ),
-              TiledTextLabel(
-                flex: 6,
-                text: "0 / 120",
-                textStyle: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey[600],
                 ),
               ),
               TiledIconButton(
@@ -61,19 +61,25 @@ class _JournalEditRouteState extends State<JournalEditRoute> {
         child: Column(children: [
           TextField(
             decoration: InputDecoration(
-              prefix: Padding(padding: EdgeInsets.only(right: 4,), child: Icon(
-                Icons.edit,
-                color: Colors.grey[700],
-                size: 24,
-              ),),
+              prefix: Padding(
+                padding: EdgeInsets.only(
+                  right: 8,
+                  left: 4,
+                ),
+                child: Icon(
+                  Icons.edit,
+                  color: Colors.grey[700],
+                  size: 24,
+                ),
+              ),
               alignLabelWithHint: true,
               contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
               hintText: "Take an action...",
-              hintStyle: TextStyle(fontSize: 24, color: Colors.grey[500]),
+              hintStyle: TextStyle(fontSize: 22, color: Colors.grey[500]),
               border: InputBorder.none,
             ),
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 22,
               color: Colors.grey[700],
             ),
             autofocus: true,

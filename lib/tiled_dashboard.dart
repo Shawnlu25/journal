@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:journal/utils/datetime_display.dart';
 
 final double tileUnitSize = 48;
 
@@ -208,9 +209,40 @@ class TiledTextLabel extends StatelessWidget {
 
 // ================ Time Button ==================
 
-//class TiledTimeDisplay extends StatelessWidget {
+class TiledTimeDisplay extends StatelessWidget {
+  DateTime dateTime;
+  int flex;
+  TiledTimeDisplay({@required this.dateTime, @required this.flex});
 
-//}
+  Widget build(BuildContext context) {
+    return Expanded(
+      flex: flex,
+      child: Container(
+        height: tileUnitSize,
+        color: Colors.white,
+        child: Material(
+          elevation: 0.0,
+          color: Colors.white,
+          animationDuration: Duration(milliseconds: 100),
+          child: InkWell(
+            onTap: () => {},
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                getDisplayString(this.dateTime),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[600],
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class TiledTimeButton extends StatefulWidget {
   final bool start;
