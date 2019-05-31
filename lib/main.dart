@@ -144,7 +144,6 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         bottomSheet: Container(
           color: Colors.white,
-          //elevation: 8.0,
           child: TiledDashboard(),
         ),
         body: MyHomePage(),
@@ -210,6 +209,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return ListView.builder(
       reverse: true,
+      padding: EdgeInsets.only(bottom: 48),
       itemBuilder: (_, i) {
         return list[i];
       },
