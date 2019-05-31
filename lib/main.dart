@@ -1,125 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:sticky_headers/sticky_headers.dart';
-import 'package:journal/tiled_dashboard.dart';
-import 'package:journal/widgets/activity_overview.dart';
+import 'package:journal/redux.dart';
+import 'package:journal/routes/home_route.dart';
+import 'package:redux/redux.dart';
 import 'package:journal/routes/journal_edit_route.dart';
+import 'package:redux_persist/redux_persist.dart';
+import 'package:redux_persist_flutter/redux_persist_flutter.dart';
 
-final List<Map<String, dynamic>> fakeData = [
-  {
-    "title": "在办公室工作 1",
-    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
-    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
-  },
-  {
-    "title": "在办公室工作 2",
-    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
-    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
-  },
-  {
-    "title": "在办公室工作 3",
-    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
-    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
-  },
-  {
-    "title": "在办公室工作 4",
-    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
-    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
-  },
-  {
-    "title": "在办公室工作 5",
-    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
-    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
-  },
-  {
-    "title": "在办公室工作 6",
-    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
-    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
-  },
-  {
-    "title": "在办公室工作 7",
-    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
-    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
-  },
-  {
-    "title": "在办公室工作 8",
-    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
-    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
-  },
-  {
-    "title": "在办公室工作 9",
-    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
-    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
-  },
-  {
-    "title": "在办公室工作 10",
-    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
-    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
-  },
-  {
-    "title": "在办公室工作 11",
-    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
-    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
-  },
-  {
-    "title": "在办公室工作 1",
-    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
-    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
-  },
-  {
-    "title": "在办公室工作 2",
-    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
-    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
-  },
-  {
-    "title": "在办公室工作 3",
-    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
-    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
-  },
-  {
-    "title": "在办公室工作 4",
-    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
-    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
-  },
-  {
-    "title": "在办公室工作 5",
-    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
-    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
-  },
-  {
-    "title": "在办公室工作 6",
-    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
-    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
-  },
-  {
-    "title": "在办公室工作 7",
-    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
-    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
-  },
-  {
-    "title": "在办公室工作 8",
-    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
-    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
-  },
-  {
-    "title": "在办公室工作 9",
-    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
-    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
-  },
-  {
-    "title": "在办公室工作 10",
-    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
-    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
-  },
-  {
-    "title": "在办公室工作 11",
-    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
-    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
-  },
-];
-
-final ThemeData _journalTheme = _buildJournalTheme();
+TextTheme _buildJournalTextTheme(TextTheme base) {
+  return base
+      .copyWith(
+        headline: base.headline.copyWith(
+          fontWeight: FontWeight.w500,
+        ),
+        title: base.title.copyWith(fontSize: 18.0),
+        caption: base.caption.copyWith(
+          fontWeight: FontWeight.w400,
+          fontSize: 14.0,
+        ),
+      )
+      .apply(
+        //fontFamily: 'Noto Sans',
+        displayColor: Colors.grey[800],
+        bodyColor: Colors.grey[800],
+      );
+}
 
 ThemeData _buildJournalTheme() {
   final ThemeData base = ThemeData.light();
@@ -141,163 +47,44 @@ ThemeData _buildJournalTheme() {
   );
 }
 
-TextTheme _buildJournalTextTheme(TextTheme base) {
-  return base.copyWith(
-    headline: base.headline.copyWith(
-      fontWeight: FontWeight.w500,
-    ),
-    title: base.title.copyWith(
-        fontSize: 18.0
-    ),
-    caption: base.caption.copyWith(
-      fontWeight: FontWeight.w400,
-      fontSize: 14.0,
-    ),
-  ).apply(
-    //fontFamily: 'Noto Sans',
-    displayColor: Colors.grey[800],
-    bodyColor: Colors.grey[800],
+void main() async {
+  final persistor = Persistor<JournalState>(
+    storage: FlutterStorage(location: FlutterSaveLocation.sharedPreferences),
+    serializer: JsonSerializer<JournalState>(JournalState.fromJson),
   );
-}
 
-void main() {
+  // Load initial state
+  final persistentState = await persistor.load();
+  final store = new Store<JournalState>(journalReducer,
+      initialState: persistentState ?? initialState,
+      middleware: [persistor.createMiddleware()]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     systemNavigationBarColor: Colors.white,
     systemNavigationBarIconBrightness: Brightness.dark,
   ));
-  runApp(MyApp());
+  runApp(MyApp(
+    store: store,
+  ));
 }
 
 class MyApp extends StatelessWidget {
+  final Store<JournalState> store;
+
+  MyApp({Key key, @required this.store}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: _journalTheme,
-      home: JournalEditRoute(),
-      /*Scaffold(
-        bottomSheet: Container(
-          color: Colors.white,
-          child: TiledDashboard(),
-        ),
-        body: MyHomePage(),
-      ),*/
-    );
+    return StoreProvider(
+        store: store,
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: _buildJournalTheme(),
+          routes: {
+            "/": (context) => HomeRoute(),
+            "/edit": (context) => JournalEditRoute()
+          },
+          initialRoute: "/",
+        ));
   }
-}
-
-class MyHomePage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return _MyHomePageState();
-  }
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  ScrollController _scrollController;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController();
-  }
-
-  Widget _buildOverviewList() {
-    var groups = [];
-    fakeData.reversed.toList().forEach((data) {
-      var startTime = DateTime.fromMillisecondsSinceEpoch(data["startTime"]);
-      if (groups.isNotEmpty) {
-        var lastStartTime = DateTime.fromMillisecondsSinceEpoch(
-            groups[groups.length - 1][0]["startTime"]);
-
-        if (startTime.year == lastStartTime.year &&
-            startTime.month == lastStartTime.month &&
-            startTime.day == lastStartTime.day) {
-          groups[groups.length - 1].add(data);
-        } else {
-          groups.add([data]);
-        }
-      } else {
-        groups.add([data]);
-      }
-    });
-
-    var list = groups.map((records) {
-      return StickyHeader(
-          overlapHeaders: false,
-          header: _buildHeader(records[0]['startTime']),
-          content: Column(
-            children: List.generate(records.length, (j) {
-              var i = records.length - 1 - j;
-              return ActivityOverview(
-                title: records[i]["title"],
-                startTime: DateTime.fromMillisecondsSinceEpoch(
-                    records[i]["startTime"]),
-                endTime:
-                    DateTime.fromMillisecondsSinceEpoch(records[i]["endTime"]),
-              );
-            }),
-          ));
-    }).toList();
-
-    return ListView.builder(
-      reverse: true,
-      padding: EdgeInsets.only(bottom: 48),
-      itemBuilder: (_, i) {
-        return list[i];
-      },
-      itemCount: list.length,
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return this._buildOverviewList();
-  }
-}
-
-Widget _buildHeader(num timestampInMilliseconds) {
-  return Row(
-    children: [
-      Container(
-        width: 56,
-        height: 56,
-        color: Colors.transparent,
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Text(
-                ActivityOverview.WeekdayMap[
-                    DateTime.fromMillisecondsSinceEpoch(timestampInMilliseconds)
-                        .weekday],
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300,
-                ),
-              ),
-              Text(
-                //startTime.day.toString(),
-                DateTime.fromMillisecondsSinceEpoch(timestampInMilliseconds)
-                    .day
-                    .toString(),
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
-              ),
-            ],
-          ),
-        ),
-      ),
-      Expanded(
-        child: Container(
-          height: 56,
-          color: Colors.transparent,
-        ),
-      ),
-    ],
-  );
 }

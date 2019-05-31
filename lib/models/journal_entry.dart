@@ -6,24 +6,29 @@ enum JournalEntryState { Past, InProgress, Future }
 class JournalEntry implements Comparable<JournalEntry> {
   String _id;
   String _act;
-  DateTime _startTimestamp;
-  DateTime _endTimestamp;
+  DateTime _startTime;
+  DateTime _endTime;
   //List<Tag> tags;
   //String description;
 
   // =========== Constructors ============
   // Default Constructor
-  JournalEntry(this._id, this._act, this._startTimestamp, this._endTimestamp) {
-    if (_endTimestamp != null && _endTimestamp.isBefore(_startTimestamp)) {
-      _endTimestamp = _startTimestamp;
+  JournalEntry(this._act, this._startTime, this._endTime, {String id}) {
+    if (_endTime != null && _endTime.isBefore(_startTime)) {
+      _endTime = _startTime;
+    }
+    if (id != null) {
+      _id = id;
+    } else {
+      _id = Uuid().v4();
     }
   }
 
   // Constructor for creating a new entry
-  JournalEntry.createEntry(DateTime startTimestamp) {
+  JournalEntry.createEntry(DateTime startTime) {
     this._id = Uuid().v4();
     this._act = "";
-    this._startTimestamp = startTimestamp;
+    this._startTime = startTime;
   }
 
   // ========== Getter & Setters ==========
@@ -35,39 +40,39 @@ class JournalEntry implements Comparable<JournalEntry> {
     _act = value;
   }
 
-  DateTime get startTimestamp => _startTimestamp;
+  DateTime get startTime => _startTime;
 
-  set startTimestamp(DateTime value) {
-    if (endTimestamp != null && value.isAfter(endTimestamp)) {
-      _endTimestamp = value;
+  set startTime(DateTime value) {
+    if (_endTime != null && value.isAfter(_endTime)) {
+      _endTime = value;
     }
-    _startTimestamp = value;
+    _startTime = value;
   }
 
-  DateTime get endTimestamp => _endTimestamp;
+  DateTime get endTime => _endTime;
 
-  set endTimestamp(DateTime value) {
-    if (value != null && value.isBefore(startTimestamp)) {
-      _endTimestamp = startTimestamp;
+  set endTime(DateTime value) {
+    if (value != null && value.isBefore(_startTime)) {
+      _endTime = _startTime;
     } else {
-      _endTimestamp = value;
+      _endTime = value;
     }
   }
 
   // ============= Comparable =================
   @override
   int compareTo(JournalEntry e) {
-    if (startTimestamp.compareTo(e.startTimestamp) != 0) {
-      return startTimestamp.compareTo(e.startTimestamp);
+    if (startTime.compareTo(e.startTime) != 0) {
+      return startTime.compareTo(e.startTime);
     }
 
-    if (endTimestamp != null) {
-      if (e.endTimestamp == null) {
+    if (endTime != null) {
+      if (e.endTime == null) {
         return -1;
-      } else if (endTimestamp.compareTo(e.endTimestamp) != 0) {
-        return endTimestamp.compareTo(e.endTimestamp);
+      } else if (endTime.compareTo(e.endTime) != 0) {
+        return endTime.compareTo(e.endTime);
       }
-    } else if (e.endTimestamp != null) {
+    } else if (e.endTime != null) {
       return 1;
     }
 
@@ -88,11 +93,11 @@ class JournalEntry implements Comparable<JournalEntry> {
   JournalEntryState getState() {
     final now = new DateTime.now();
 
-    if (this._startTimestamp.isAfter(now)) {
+    if (this._startTime.isAfter(now)) {
       return JournalEntryState.Future;
     }
 
-    if (this._endTimestamp != null && this._endTimestamp.isBefore(now)) {
+    if (this._endTime != null && this._endTime.isBefore(now)) {
       return JournalEntryState.Past;
     }
 
@@ -100,6 +105,30 @@ class JournalEntry implements Comparable<JournalEntry> {
   }
 
   Duration getDuration() {
-    return this._endTimestamp?.difference(this._startTimestamp);
+    return this._endTime?.difference(this._startTime);
+  }
+
+  String toString() {
+    return "${_id}:${_act}";
+  }
+
+  JournalEntry.fromJson(Map<String, dynamic> json) {
+    this._act = json["act"];
+    this._id = json["id"];
+    this._startTime = json["startTime"] != null
+        ? DateTime.fromMillisecondsSinceEpoch(json["startTime"])
+        : null;
+    this._endTime = json["endTime"] != null
+        ? DateTime.fromMillisecondsSinceEpoch(json["endTime"])
+        : null;
+  }
+
+  dynamic toJson() {
+    return {
+      "act": _act,
+      "id": _id,
+      "startTime": _startTime.millisecondsSinceEpoch,
+      "endTime": _endTime.millisecondsSinceEpoch
+    };
   }
 }

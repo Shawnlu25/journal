@@ -28,6 +28,9 @@ dependencies:
   sticky_headers: ^0.1.8
   flutter_datetime_picker: ^1.2.1
   intl: ^0.15.8
+  redux_persist_flutter: ^0.8.1
+  shared_preferences: ^0.5.2
+
   
 dev_dependencies:
   flutter_test:

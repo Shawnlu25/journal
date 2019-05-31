@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 
 final double minHeight = 56;
 
+typedef void OnTap();
+
 class ActivityOverview extends StatelessWidget {
   final String title;
   final DateTime startTime;
   final DateTime endTime;
+  final OnTap onTap;
 
   static const WeekdayMap = {
     1: "Mon",
@@ -18,7 +21,10 @@ class ActivityOverview extends StatelessWidget {
   };
 
   ActivityOverview(
-      {@required this.startTime, @required this.endTime, @required this.title});
+      {@required this.startTime,
+      @required this.endTime,
+      @required this.title,
+      @required this.onTap});
 
   String _addHeadingZero(String x) {
     if (x.length == 1) {
@@ -44,7 +50,7 @@ class ActivityOverview extends StatelessWidget {
           color: Colors.white,
           animationDuration: Duration(milliseconds: 100),
           child: InkWell(
-            onTap: () {},
+            onTap: this.onTap,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(8.0, 4.0, 0.0, 4.0),
               child: Column(

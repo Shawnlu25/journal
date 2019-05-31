@@ -17,14 +17,17 @@ void main() {
   });
 
   group("Test journal entry state", () {
-    test('New journal entry with startTimestamp before current time should have state InProgress', () {
+    test(
+        'New journal entry with startTimestamp before current time should have state InProgress',
+        () {
       JournalEntry e = JournalEntry.createEntry(twentyMinutesBeforeCurrent);
       expect(e.getState(), JournalEntryState.InProgress);
     });
   });
 
-  group("Test compareTo", (){
-    test("Entries with the same start & end timestamps should compare on act", () {
+  group("Test compareTo", () {
+    test("Entries with the same start & end timestamps should compare on act",
+        () {
       JournalEntry e1 = JournalEntry.createEntry(currentTime);
       JournalEntry e2 = JournalEntry.createEntry(currentTime);
       e1.act = "A";
@@ -32,13 +35,15 @@ void main() {
       expect(e1.compareTo(e2) < 0, true);
     });
 
-    test("Entries with the same start timestamp should compare on end timestamps", () {
+    test(
+        "Entries with the same start timestamp should compare on end timestamps",
+        () {
       JournalEntry e1 = JournalEntry.createEntry(currentTime);
       JournalEntry e2 = JournalEntry.createEntry(currentTime);
-      e1.endTimestamp = tenMinutesBeforeCurrent;
-      e2.endTimestamp = null;
+      e1.endTime = tenMinutesBeforeCurrent;
+      e2.endTime = null;
       expect(e1.compareTo(e2) < 0, true);
-      expect(e1.endTimestamp, currentTime);
+      expect(e1.endTime, currentTime);
     });
   });
 }

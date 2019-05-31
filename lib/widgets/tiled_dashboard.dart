@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:journal/utils/datetime_display.dart';
+import 'package:flutter/widgets.dart';
 
 final double tileUnitSize = 48;
 
@@ -10,92 +12,44 @@ class TiledDashboard extends StatefulWidget {
 
 class _TiledDashboardState extends State<TiledDashboard> {
   double _height = tileUnitSize * 1;
-  bool _opened = false;
 
   @override
   @override
   Widget build(BuildContext context) {
-    // Fill this out in the next steps
-    if (!_opened) {
-      return Container(
-        height: _height,
-        //duration: Duration(milliseconds: 100),
-        child: Align(
-          alignment: Alignment.topLeft,
-          child: Column(
-            children: [
-              Row(
-                children: <Widget>[
-                  TiledTextButton(
-                    onTap: () {
-                      setState(() {
-                        _opened = true;
-                        _height = tileUnitSize * 2;
-                      });
-                    },
-                    flex: 7,
-                    text: "Take an action...",
-                    textStyle: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey[500],
-                    ),
+    return Container(
+      height: _height,
+      //duration: Duration(milliseconds: 100),
+      child: Align(
+        alignment: Alignment.topLeft,
+        child: Column(
+          children: [
+            Row(
+              children: <Widget>[
+                TiledTextButton(
+                  onTap: () {
+                    setState(() {
+                      Navigator.pushNamed(context, "/edit", arguments: null);
+                    });
+                  },
+                  flex: 7,
+                  text: "Take an action...",
+                  textStyle: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey[500],
                   ),
-                  TiledIconButton(
-                    onTap: () {},
-                    iconData: Icons.more_vert,
-                    flex: 1,
-                    iconSizeFactor: 1.0,
-                  ),
-                ],
-              ),
-            ],
-          ),
+                ),
+                TiledIconButton(
+                  onTap: () {},
+                  iconData: Icons.more_vert,
+                  flex: 1,
+                  iconSizeFactor: 1.0,
+                ),
+              ],
+            ),
+          ],
         ),
-      );
-    } else {
-      return Container(
-        height: _height,
-        // duration: Duration(milliseconds: 100),
-        child: Align(
-          alignment: Alignment.topLeft,
-          child: Column(
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  TiledTimeButton(
-                    start: true,
-                  ),
-                  TiledTimeButton(
-                    start: false,
-                  ),
-                  TiledIconButton(
-                    onTap: () {
-                      this.setState(() {
-                        _height = tileUnitSize * 1;
-                        _opened = false;
-                      });
-                    },
-                    iconData: Icons.check,
-                    flex: 1,
-                    iconSizeFactor: 1.0,
-                  ),
-                  TiledIconButton(
-                    onTap: () {},
-                    iconData: Icons.more_vert,
-                    flex: 1,
-                    iconSizeFactor: 1.0,
-                  )
-                ],
-              ),
-              Row(
-                children: <Widget>[TiledTextfield()],
-              )
-            ],
-          ),
-        ),
-      );
-    }
+      ),
+    );
   }
 }
 
@@ -342,13 +296,29 @@ class _TiledTimeButtonState extends State<TiledTimeButton> {
             onTap: () => {},
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text(
-                "${widget.start ? "> " : ""}${_timestamp.month} / ${_timestamp.day}  ${_timestamp.hour} : ${formatMinute(_timestamp.minute)}${!widget.start ? " <" : ""}",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
-                ),
-                textAlign: TextAlign.left,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  widget.start
+                      ? Icon(
+                          Icons.chevron_right,
+                          size: 20,
+                          color: Colors.grey[600],
+                        )
+                      : null,
+                  Text(
+                    "${_timestamp.month} / ${_timestamp.day}  ${_timestamp.hour} : ${formatMinute(_timestamp.minute)}",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey[600],
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                  !widget.start
+                      ? Icon(Icons.chevron_left,
+                          size: 20, color: Colors.grey[600])
+                      : null
+                ].where((x) => x != null).toList(),
               ),
             ),
           ),
@@ -360,19 +330,26 @@ class _TiledTimeButtonState extends State<TiledTimeButton> {
 
 //=============== Textfield ===================
 
+typedef void OnChanged(String text);
+
 class TiledTextfield extends StatefulWidget {
+  final OnChanged onChanged;
+  final String text;
+
+  @override
+  TiledTextfield({Key key, this.onChanged, this.text}) : super(key: key);
+
   @override
   _TiledTextfield createState() => _TiledTextfield();
 }
 
 class _TiledTextfield extends State<TiledTextfield> {
-  String _note = "";
   TextEditingController _controller;
   FocusNode _focusNode;
 
   @override
   void initState() {
-    _controller = TextEditingController();
+    _controller = TextEditingController(text: widget.text);
     _focusNode = FocusNode();
     super.initState();
   }
@@ -408,11 +385,7 @@ class _TiledTextfield extends State<TiledTextfield> {
           controller: _controller,
           focusNode: _focusNode,
 
-          onChanged: (String note) {
-            setState(() {
-              this._note = note;
-            });
-          },
+          onChanged: widget.onChanged,
 
           style: TextStyle(
             fontSize: 16,
