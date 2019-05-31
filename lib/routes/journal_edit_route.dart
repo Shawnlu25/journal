@@ -11,16 +11,11 @@ class JournalEditRoute extends StatefulWidget {
 class _JournalEditRouteState extends State<JournalEditRoute> {
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        actions: <Widget>[
-          /*TiledIconButton(
-              iconData: Icons.more_vert,
-              flex: 0,
-              iconSizeFactor: 1.0,
-              onTap: () {}),*/
-        ],
+        actions: <Widget>[],
       ),
       bottomSheet: Container(
         height: 48.0,
@@ -37,9 +32,19 @@ class _JournalEditRouteState extends State<JournalEditRoute> {
                 mode: TiledTimeDisplayMode.StartMode,
               ),
               TiledTimeDisplay(
-                dateTime: null,//DateTime.now().add(Duration(minutes: 20, hours: 30, days: 8)),
+                dateTime:
+                    null, //DateTime.now().add(Duration(minutes: 20, hours: 30, days: 8)),
                 flex: 3,
-                onTap: () {},
+                onTap: () { Future<TimeOfDay> selectedTimeRTL = showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay.now(),
+                  builder: (BuildContext context, Widget child) {
+                    return MediaQuery(
+                      data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+                      child: child,
+                    );
+                  },
+                );},
                 mode: TiledTimeDisplayMode.InProgressMode,
               ),
               Expanded(
@@ -62,6 +67,7 @@ class _JournalEditRouteState extends State<JournalEditRoute> {
       ),
       body: Container(
         color: Colors.white,
+        padding: EdgeInsets.only(top: 16, bottom: 48),
         child: Column(children: [
           TextField(
             decoration: InputDecoration(

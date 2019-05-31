@@ -119,6 +119,47 @@ final List<Map<String, dynamic>> fakeData = [
   },
 ];
 
+final ThemeData _journalTheme = _buildJournalTheme();
+
+ThemeData _buildJournalTheme() {
+  final ThemeData base = ThemeData.light();
+  return base.copyWith(
+    accentColor: Colors.grey[800],
+    primaryColor: Colors.white,
+    buttonTheme: base.buttonTheme.copyWith(
+      buttonColor: Colors.grey[400],
+      textTheme: ButtonTextTheme.normal,
+      colorScheme: ColorScheme.light(),
+    ),
+    scaffoldBackgroundColor: Colors.white,
+    cardColor: Colors.white,
+    textSelectionColor: Colors.grey[400],
+    errorColor: Color.fromRGBO(50, 30, 30, 100.0),
+    textTheme: _buildJournalTextTheme(base.textTheme),
+    // TODO: Add the icon themes (103)
+    // TODO: Decorate the inputs (103)
+  );
+}
+
+TextTheme _buildJournalTextTheme(TextTheme base) {
+  return base.copyWith(
+    headline: base.headline.copyWith(
+      fontWeight: FontWeight.w500,
+    ),
+    title: base.title.copyWith(
+        fontSize: 18.0
+    ),
+    caption: base.caption.copyWith(
+      fontWeight: FontWeight.w400,
+      fontSize: 14.0,
+    ),
+  ).apply(
+    //fontFamily: 'Noto Sans',
+    displayColor: Colors.grey[800],
+    bodyColor: Colors.grey[800],
+  );
+}
+
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     systemNavigationBarColor: Colors.white,
@@ -133,15 +174,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primaryColor: Colors.white,
-        brightness: Brightness.light,
-        textTheme: TextTheme(
-          headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-          title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-          body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
-        ),
-      ),
+      theme: _journalTheme,
       home: JournalEditRoute(),
       /*Scaffold(
         bottomSheet: Container(
