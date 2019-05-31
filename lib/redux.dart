@@ -7,7 +7,6 @@ class JournalState {
   JournalState({
     this.journalEntries,
   });
-
 }
 
 // ========== Actions ==========
@@ -39,6 +38,7 @@ final journalReducer = combineReducers<JournalState>([
 JournalState _onJournalAdd(JournalState state, JournalAddAction action) {
   List<JournalEntry> journalEntries = state.journalEntries;
   journalEntries.add(action.newEntry);
+  journalEntries.sort();
   return JournalState(journalEntries: journalEntries);
 }
 
@@ -50,6 +50,8 @@ JournalState _onJournalDelete(JournalState state, JournalDeleteAction action) {
 
 JournalState _onJournalModify(JournalState state, JournalModifyAction action) {
   List<JournalEntry> journalEntries = state.journalEntries;
-  journalEntries[journalEntries.indexOf(journalEntries.firstWhere((e) => e.id == action.entry.id))] = action.entry;
+  journalEntries[journalEntries
+          .indexOf(journalEntries.firstWhere((e) => e.id == action.entry.id))] =
+      action.entry;
   return JournalState(journalEntries: journalEntries);
 }

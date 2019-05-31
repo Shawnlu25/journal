@@ -1,7 +1,122 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:sticky_headers/sticky_headers.dart';
 import 'package:journal/tiled_dashboard.dart';
+import 'package:journal/widgets/activity_overview.dart';
+
+final List<Map<String, dynamic>> fakeData = [
+  {
+    "title": "在办公室工作 1",
+    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
+  },
+  {
+    "title": "在办公室工作 2",
+    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
+  },
+  {
+    "title": "在办公室工作 3",
+    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
+  },
+  {
+    "title": "在办公室工作 4",
+    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
+  },
+  {
+    "title": "在办公室工作 5",
+    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
+  },
+  {
+    "title": "在办公室工作 6",
+    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
+  },
+  {
+    "title": "在办公室工作 7",
+    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
+  },
+  {
+    "title": "在办公室工作 8",
+    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
+  },
+  {
+    "title": "在办公室工作 9",
+    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
+  },
+  {
+    "title": "在办公室工作 10",
+    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
+  },
+  {
+    "title": "在办公室工作 11",
+    "startTime": DateTime(2019, 5, 27, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 27, 11, 30).millisecondsSinceEpoch
+  },
+  {
+    "title": "在办公室工作 1",
+    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
+  },
+  {
+    "title": "在办公室工作 2",
+    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
+  },
+  {
+    "title": "在办公室工作 3",
+    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
+  },
+  {
+    "title": "在办公室工作 4",
+    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
+  },
+  {
+    "title": "在办公室工作 5",
+    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
+  },
+  {
+    "title": "在办公室工作 6",
+    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
+  },
+  {
+    "title": "在办公室工作 7",
+    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
+  },
+  {
+    "title": "在办公室工作 8",
+    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
+  },
+  {
+    "title": "在办公室工作 9",
+    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
+  },
+  {
+    "title": "在办公室工作 10",
+    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
+  },
+  {
+    "title": "在办公室工作 11",
+    "startTime": DateTime(2019, 5, 28, 11, 0).millisecondsSinceEpoch,
+    "endTime": DateTime(2019, 5, 28, 11, 30).millisecondsSinceEpoch
+  },
+];
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -19,6 +134,12 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.grey,
+        brightness: Brightness.light,
+        textTheme: TextTheme(
+          headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+          title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+          body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+        ),
       ),
       home: Scaffold(
         bottomSheet: Container(
@@ -26,38 +147,109 @@ class MyApp extends StatelessWidget {
           //elevation: 8.0,
           child: TiledDashboard(),
         ),
+        body: MyHomePage(),
       ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _MyHomePageState();
+  }
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  Widget _buildOverviewList() {
+    var groups = [];
+    fakeData.reversed.toList().forEach((data) {
+      var startTime = DateTime.fromMillisecondsSinceEpoch(data["startTime"]);
+      if (groups.isNotEmpty) {
+        var lastStartTime = DateTime.fromMillisecondsSinceEpoch(
+            groups[groups.length - 1][0]["startTime"]);
+
+        if (startTime.year == lastStartTime.year &&
+            startTime.month == lastStartTime.month &&
+            startTime.day == lastStartTime.day) {
+          groups[groups.length - 1].add(data);
+        } else {
+          groups.add([data]);
+        }
+      } else {
+        groups.add([data]);
+      }
+    });
+
+    var list = groups.map((records) {
+      return StickyHeader(
+          overlapHeaders: true,
+          header: Container(
+            color: Colors.transparent,
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                      ActivityOverview.WeekdayMap[
+                          DateTime.fromMillisecondsSinceEpoch(
+                                  records[0]["startTime"])
+                              .weekday],
+                      textAlign: TextAlign.left,
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w300)),
+                  Text(
+                    //startTime.day.toString(),
+                    DateTime.fromMillisecondsSinceEpoch(records[0]["startTime"])
+                        .day
+                        .toString(),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // header: Text("Hi"),
+
+          content: Column(
+            children: List.generate(records.length, (j) {
+              var i = records.length - 1 - j;
+              return Padding(
+                padding: EdgeInsets.only(left: 8, right: 8),
+                child: ActivityOverview(
+                  title: records[i]["title"],
+                  startTime: DateTime.fromMillisecondsSinceEpoch(
+                      records[i]["startTime"]),
+                  endTime: DateTime.fromMillisecondsSinceEpoch(
+                      records[i]["endTime"]),
+                ),
+              );
+            }),
+          ));
+    }).toList();
+    return ListView.builder(
+      reverse: true,
+      itemBuilder: (_, i) {
+        return list[i];
+      },
+      itemCount: list.length,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return MaterialApp(home: Container());
+    return this._buildOverviewList();
   }
 }
