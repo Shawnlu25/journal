@@ -209,10 +209,84 @@ class TiledTextLabel extends StatelessWidget {
 
 // ================ Time Button ==================
 
+enum TiledTimeDisplayMode { StartMode, EndMode, InProgressMode, Normal }
+
 class TiledTimeDisplay extends StatelessWidget {
   DateTime dateTime;
   int flex;
-  TiledTimeDisplay({@required this.dateTime, @required this.flex});
+  VoidCallback onTap;
+  TiledTimeDisplayMode mode;
+  TiledTimeDisplay(
+      {this.dateTime,
+      @required this.flex,
+      this.onTap,
+      this.mode = TiledTimeDisplayMode.Normal});
+
+  Widget _buildTimeDisplay(BuildContext context) {
+    Widget widget;
+    switch (this.mode) {
+      case TiledTimeDisplayMode.StartMode:
+        return Row(
+          children: <Widget>[
+            Container(
+              width: tileUnitSize,
+              child: Icon(
+                Icons.chevron_right,
+                size: 24,
+                color: Colors.grey[600],
+              ),
+            ),
+            Expanded(
+              child: Text(
+                getDisplayString(this.dateTime),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[600],
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ),
+          ],
+        );
+        break;
+      case TiledTimeDisplayMode.EndMode:
+      case TiledTimeDisplayMode.InProgressMode:
+        return Row(
+          children: <Widget>[
+            Expanded(
+              child: Text(
+                getDisplayString(this.dateTime),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[600],
+                ),
+                textAlign: TextAlign.right,
+              ),
+            ),
+            Container(
+              width: tileUnitSize,
+              child: Icon(
+                Icons.chevron_left,
+                size: 24,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
+        );
+        break;
+      default:
+        return Center(
+          child: Text(
+            getDisplayString(this.dateTime),
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey[600],
+            ),
+            textAlign: TextAlign.center,
+          ),
+        );
+    }
+  }
 
   Widget build(BuildContext context) {
     return Expanded(
@@ -225,18 +299,8 @@ class TiledTimeDisplay extends StatelessWidget {
           color: Colors.white,
           animationDuration: Duration(milliseconds: 100),
           child: InkWell(
-            onTap: () => {},
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                getDisplayString(this.dateTime),
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
+            onTap: onTap,
+            child: _buildTimeDisplay(context),
           ),
         ),
       ),

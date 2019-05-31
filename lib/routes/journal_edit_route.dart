@@ -33,10 +33,14 @@ class _JournalEditRouteState extends State<JournalEditRoute> {
               TiledTimeDisplay(
                 dateTime: DateTime.now(),
                 flex: 3,
+                onTap: () {},
+                mode: TiledTimeDisplayMode.StartMode,
               ),
               TiledTimeDisplay(
-                dateTime: DateTime.now().add(Duration(minutes: 20, hours: 30, days: 8)),
+                dateTime: null,//DateTime.now().add(Duration(minutes: 20, hours: 30, days: 8)),
                 flex: 3,
+                onTap: () {},
+                mode: TiledTimeDisplayMode.InProgressMode,
               ),
               Expanded(
                 flex: 1,

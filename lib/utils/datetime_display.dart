@@ -6,6 +6,10 @@ final dateTimeFormatter = new DateFormat('MMM d HH : mm');
 
 String getDisplayString(DateTime timestamp) {
   DateTime cur = DateTime.now();
+  if (timestamp == null) {
+    return "In progress";
+  }
+
   if (sameDay(cur, timestamp)) {
     return timeOnlyFormatter.format(timestamp);
   }
