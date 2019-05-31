@@ -145,32 +145,68 @@ class TiledIconButton extends StatelessWidget {
       {Key key, this.onTap, this.iconData, this.flex, this.iconSizeFactor})
       : super(key: key);
 
-  Widget build(BuildContext context) {
-    return Expanded(
-      flex: flex,
-      child: Container(
-        height: tileUnitSize,
+  Widget _buildInnerWidget(BuildContext context) {
+    return Container(
+      height: tileUnitSize,
+      width: flex == 0 ? tileUnitSize : null,
+      color: Colors.white,
+      padding: EdgeInsets.all(0.0),
+      child: Material(
+        elevation: 0.0,
         color: Colors.white,
-        padding: EdgeInsets.all(0.0),
-        child: Material(
-          elevation: 0.0,
-          color: Colors.white,
-          animationDuration: Duration(milliseconds: 100),
-          child: InkWell(
-            onTap: onTap,
-            child: Center(
-              child: Icon(
-                iconData,
-                color: Colors.grey[600],
-                size: tileUnitSize * iconSizeFactor / 2.0,
-              ),
+        animationDuration: Duration(milliseconds: 100),
+        child: InkWell(
+          onTap: onTap,
+          child: Center(
+            child: Icon(
+              iconData,
+              color: Colors.grey[600],
+              size: tileUnitSize * iconSizeFactor / 2.0,
             ),
           ),
         ),
       ),
     );
   }
+
+  Widget build(BuildContext context) {
+    if (flex == 0) {
+      return _buildInnerWidget(context);
+    }
+    return Expanded(
+      flex: flex,
+      child: _buildInnerWidget(context),
+    );
+  }
 }
+
+// ============== Text Label ==================
+class TiledTextLabel extends StatelessWidget {
+  String text;
+  int flex;
+  TextStyle textStyle;
+
+  TiledTextLabel({@required this.text, @required this.flex, this.textStyle});
+
+  Widget build(BuildContext context) {
+    return Expanded(
+      flex: flex,
+      child: Container(
+        height: tileUnitSize,
+        color: Colors.white,
+        child: Center(
+          child: Text(
+            text,
+            style: textStyle,
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ================ Time Button ==================
 
 class TiledTimeButton extends StatefulWidget {
   final bool start;
@@ -221,6 +257,8 @@ class _TiledTimeButtonState extends State<TiledTimeButton> {
     );
   }
 }
+
+//=============== Textfield ===================
 
 class TiledTextfield extends StatefulWidget {
   @override

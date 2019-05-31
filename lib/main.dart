@@ -4,6 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 import 'package:journal/tiled_dashboard.dart';
 import 'package:journal/widgets/activity_overview.dart';
+import 'package:journal/routes/journal_edit_route.dart';
 
 final List<Map<String, dynamic>> fakeData = [
   {
@@ -133,7 +134,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.grey,
+        primaryColor: Colors.white,
         brightness: Brightness.light,
         textTheme: TextTheme(
           headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
@@ -141,13 +142,14 @@ class MyApp extends StatelessWidget {
           body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
         ),
       ),
-      home: Scaffold(
+      home: JournalEditRoute(),
+      /*Scaffold(
         bottomSheet: Container(
           color: Colors.white,
           child: TiledDashboard(),
         ),
         body: MyHomePage(),
-      ),
+      ),*/
     );
   }
 }
