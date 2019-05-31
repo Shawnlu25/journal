@@ -23,10 +23,10 @@ class _TiledDashboardState extends State<TiledDashboard> {
             Row(
               children: <Widget>[
                 TiledTextButton(
-                  onTap: () => {
+                  onTap: () {
                         setState(() {
-                          _height = tileUnitSize * 6;
-                        })
+                          _height = tileUnitSize * 2;
+                        });
                       },
                   flex: 7,
                   text: "Take an action...",
@@ -46,10 +46,10 @@ class _TiledDashboardState extends State<TiledDashboard> {
             Row(
               children: <Widget>[
                 TiledTextButton(
-                  onTap: () => {
+                  onTap: () {
                         setState(() {
-                          _height = tileUnitSize * 8;
-                        })
+                          _height = tileUnitSize * 4;
+                        });
                       },
                   flex: 5,
                   text: "Take an action...",

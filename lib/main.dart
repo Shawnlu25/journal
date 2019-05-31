@@ -192,7 +192,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     var list = groups.map((records) {
       return StickyHeader(
-          overlapHeaders: true,
+          overlapHeaders: false,
           header: Container(
             color: Colors.transparent,
             alignment: Alignment.topLeft,
@@ -220,25 +220,20 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ),
-
-          // header: Text("Hi"),
-
           content: Column(
             children: List.generate(records.length, (j) {
               var i = records.length - 1 - j;
-              return Padding(
-                padding: EdgeInsets.only(left: 8, right: 8),
-                child: ActivityOverview(
-                  title: records[i]["title"],
-                  startTime: DateTime.fromMillisecondsSinceEpoch(
-                      records[i]["startTime"]),
-                  endTime: DateTime.fromMillisecondsSinceEpoch(
-                      records[i]["endTime"]),
-                ),
+              return ActivityOverview(
+                title: records[i]["title"],
+                startTime: DateTime.fromMillisecondsSinceEpoch(
+                    records[i]["startTime"]),
+                endTime:
+                    DateTime.fromMillisecondsSinceEpoch(records[i]["endTime"]),
               );
             }),
           ));
     }).toList();
+
     return ListView.builder(
       reverse: true,
       itemBuilder: (_, i) {
