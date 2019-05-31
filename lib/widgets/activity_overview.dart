@@ -32,32 +32,40 @@ class ActivityOverview extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.fromLTRB(56, 0, 0, 0),
-      child: Material(
-        elevation: 0.0,
-        color: Colors.white,
-        animationDuration: Duration(milliseconds: 100),
-        child: InkWell(
-          onTap: () {},
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(8.0, 4.0, 0.0, 4.0),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    title,
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.grey[700]),
-                  ),
-                  Container(height: 4),
-                  Text(
-                      "${startTime.hour}:${_addHeadingZero(startTime.minute.toString())} - ${endTime.hour}:${_addHeadingZero(endTime.minute.toString())}",
+      child: Container(
+        decoration: const BoxDecoration(
+          border: Border(
+            left:
+                BorderSide(width: 4.0, color: Color.fromRGBO(50, 10, 10, 100)),
+          ),
+        ),
+        child: Material(
+          elevation: 0.0,
+          color: Colors.white,
+          animationDuration: Duration(milliseconds: 100),
+          child: InkWell(
+            onTap: () {},
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(8.0, 4.0, 0.0, 4.0),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      title,
                       style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[700],
-                          fontWeight: FontWeight.w300))
-                ]),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey[700]),
+                    ),
+                    Container(height: 4),
+                    Text(
+                        "${startTime.hour}:${_addHeadingZero(startTime.minute.toString())} - ${endTime.hour}:${_addHeadingZero(endTime.minute.toString())}",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey[700],
+                            fontWeight: FontWeight.w300))
+                  ]),
+            ),
           ),
         ),
       ),

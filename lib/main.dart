@@ -193,33 +193,7 @@ class _MyHomePageState extends State<MyHomePage> {
     var list = groups.map((records) {
       return StickyHeader(
           overlapHeaders: false,
-          header: Container(
-            color: Colors.transparent,
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: <Widget>[
-                  Text(
-                      ActivityOverview.WeekdayMap[
-                          DateTime.fromMillisecondsSinceEpoch(
-                                  records[0]["startTime"])
-                              .weekday],
-                      textAlign: TextAlign.left,
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.w300)),
-                  Text(
-                    //startTime.day.toString(),
-                    DateTime.fromMillisecondsSinceEpoch(records[0]["startTime"])
-                        .day
-                        .toString(),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          header: _buildHeader(records[0]['startTime']),
           content: Column(
             children: List.generate(records.length, (j) {
               var i = records.length - 1 - j;
@@ -247,4 +221,48 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return this._buildOverviewList();
   }
+}
+
+Widget _buildHeader(num timestampInMilliseconds) {
+  return Row(
+    children: [
+      Container(
+        width: 56,
+        height: 56,
+        color: Colors.transparent,
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Text(
+                ActivityOverview.WeekdayMap[
+                    DateTime.fromMillisecondsSinceEpoch(timestampInMilliseconds)
+                        .weekday],
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w300,
+                ),
+              ),
+              Text(
+                //startTime.day.toString(),
+                DateTime.fromMillisecondsSinceEpoch(timestampInMilliseconds)
+                    .day
+                    .toString(),
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+              ),
+            ],
+          ),
+        ),
+      ),
+      Expanded(
+        child: Container(
+          height: 56,
+          color: Colors.transparent,
+        ),
+      ),
+    ],
+  );
 }
