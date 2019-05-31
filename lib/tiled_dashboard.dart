@@ -208,6 +208,10 @@ class TiledTextLabel extends StatelessWidget {
 
 // ================ Time Button ==================
 
+//class TiledTimeDisplay extends StatelessWidget {
+
+//}
+
 class TiledTimeButton extends StatefulWidget {
   final bool start;
   TiledTimeButton({@required this.start});
@@ -291,33 +295,33 @@ class _TiledTextfield extends State<TiledTextfield> {
         height: tileUnitSize * 1,
         color: Colors.white,
         padding: EdgeInsets.symmetric(horizontal: 16.0),
-        child: Stack(
-          children: <Widget>[
-            (_note.length > 0
-                ? Container()
-                : Text("Take an action...",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey[500],
-                    ))),
-            EditableText(
-              controller: _controller,
-              focusNode: _focusNode,
-              onChanged: (String note) {
-                setState(() {
-                  this._note = note;
-                });
-              },
-              autofocus: true,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[600],
-              ),
-              cursorColor: Colors.grey[400],
-              backgroundCursorColor: Colors.grey[100],
-              maxLines: 1,
-            )
-          ],
+        child: EditableText(
+          scrollPadding: EdgeInsets.symmetric(vertical: 56.0),
+          // Cursor
+          cursorColor: Colors.grey[400],
+          backgroundCursorColor: Colors.grey[100],
+
+          // Selection
+          enableInteractiveSelection: true,
+          selectionColor: Colors.grey[300],
+          selectionControls: materialTextSelectionControls,
+
+          // Max Lines
+          autofocus: true,
+          maxLines: null,
+          controller: _controller,
+          focusNode: _focusNode,
+
+          onChanged: (String note) {
+            setState(() {
+              this._note = note;
+            });
+          },
+
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.grey[600],
+          ),
         ),
       ),
     );
