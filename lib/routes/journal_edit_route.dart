@@ -83,7 +83,12 @@ class _JournalEditRouteState extends State<JournalEditRoute> {
         journalEntryCache = JournalEntry.createEntry(DateTime.now());
       }
     }
-    _controller.text = journalEntryCache?.act ?? "";
+    String initialText = journalEntryCache?.act ?? "";
+    _controller.value = _controller.value.copyWith(
+      text: journalEntryCache?.act ?? "",
+      selection: TextSelection(baseOffset: initialText.length, extentOffset: initialText.length),
+      composing: TextRange.empty,
+    );
 
     return StoreConnector<JournalState, _StateToDispatchMap>(
         converter: (store) => _StateToDispatchMap(
