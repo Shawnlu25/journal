@@ -135,8 +135,8 @@ class JournalEntry implements Comparable<JournalEntry> {
     return {
       "act": _act,
       "id": _id,
-      "startTime": _startTime.millisecondsSinceEpoch,
-      "endTime": _endTime.millisecondsSinceEpoch
+      "startTime": _startTime?.millisecondsSinceEpoch,
+      "endTime": _endTime?.millisecondsSinceEpoch,
     };
   }
 }
