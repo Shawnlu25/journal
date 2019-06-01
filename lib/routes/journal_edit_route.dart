@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:journal/models/journal_entry.dart';
 import 'package:journal/redux.dart';
-import 'package:journal/routes/home_route.dart';
 import 'package:journal/widgets/tiled_dashboard.dart';
-import 'package:redux/redux.dart';
 
 class JournalEditRoute extends StatefulWidget {
   JournalEditRoute();
@@ -27,7 +26,8 @@ class _StateToDispatchMap {
 
 class _JournalEditRouteState extends State<JournalEditRoute> {
   TextEditingController _controller;
-  JournalEntry selectedJournalEntry;
+  JournalEntry journalEntryCache;
+  bool newEntry;
 
   @override
   void initState() {
@@ -46,17 +46,16 @@ class _JournalEditRouteState extends State<JournalEditRoute> {
     final newAct = _controller.text ?? "";
     if (newAct.length == 0) {
       Navigator.pop(context);
-    } else if (oldJournalEntry == null) {
-      // Create new journalEntry
-      stateToDispatchMap
-          .addJournal(JournalEntry(newAct, DateTime.now(), DateTime.now()));
+    } else if (newEntry) {
+      stateToDispatchMap.addJournal(
+          oldJournalEntry); //JournalEntry(newAct, DateTime.now(), DateTime.now()));
       Navigator.pop(context);
     } else {
-      // Modify exissting journalEntry
+      // Modify existing journalEntry
       final newJournalEntry = JournalEntry(
           newAct, oldJournalEntry.startTime, oldJournalEntry.endTime,
           id: oldJournalEntry.id);
-      stateToDispatchMap.modifyJournal(newJournalEntry);
+      stateToDispatchMap.modifyJournal(oldJournalEntry);
       Navigator.pop(context);
     }
   }
@@ -74,10 +73,18 @@ class _JournalEditRouteState extends State<JournalEditRoute> {
   @override
   Widget build(BuildContext context) {
     JournalEntry journalEntry = ModalRoute.of(context).settings.arguments;
-    if (selectedJournalEntry != journalEntry) {
-      _controller.text = journalEntry?.act ?? "";
-      selectedJournalEntry = journalEntry;
+
+    if (journalEntryCache == null) {
+      if (journalEntry != null) {
+        newEntry = false;
+        journalEntryCache = JournalEntry.copy(journalEntry);
+      } else {
+        newEntry = true;
+        journalEntryCache = JournalEntry.createEntry(DateTime.now());
+      }
     }
+    _controller.text = journalEntryCache?.act ?? "";
+
     return StoreConnector<JournalState, _StateToDispatchMap>(
         converter: (store) => _StateToDispatchMap(
             (journalEntry) => store.dispatch(JournalAddAction(journalEntry)),
@@ -91,7 +98,8 @@ class _JournalEditRouteState extends State<JournalEditRoute> {
                     return IconButton(
                       icon: Icon(Icons.arrow_back),
                       onPressed: () {
-                        this.submit(context, stateToDispatchMap, journalEntry);
+                        this.submit(
+                            context, stateToDispatchMap, journalEntryCache);
                       },
                     );
                   },
@@ -108,42 +116,45 @@ class _JournalEditRouteState extends State<JournalEditRoute> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       TiledTimeDisplay(
-                        dateTime: DateTime.now(),
+                        dateTime: journalEntryCache.startTime,
                         flex: 3,
-                        onTap: () {},
+                        onTap: () {
+                          DatePicker.showDateTimePicker(
+                            context,
+                            showTitleActions: true,
+                            onConfirm: (date) {
+                              setState(() {
+                                journalEntryCache.startTime = date;
+                              });
+                            },
+                            currentTime: journalEntryCache.startTime,
+                            locale: LocaleType.en,
+                          );
+                        },
                         mode: TiledTimeDisplayMode.StartMode,
                       ),
                       TiledTimeDisplay(
-                        dateTime:
-                            null, //DateTime.now().add(Duration(minutes: 20, hours: 30, days: 8)),
+                        dateTime: journalEntryCache.endTime,
                         flex: 3,
                         onTap: () {
-                          Future<TimeOfDay> selectedTimeRTL = showTimePicker(
-                            context: context,
-                            initialTime: TimeOfDay.now(),
-                            builder: (BuildContext context, Widget child) {
-                              return MediaQuery(
-                                data: MediaQuery.of(context)
-                                    .copyWith(alwaysUse24HourFormat: true),
-                                child: child,
-                              );
+                          DatePicker.showDateTimePicker(
+                            context,
+                            showTitleActions: true,
+                            onConfirm: (date) {
+                              setState(() {
+                                journalEntryCache.endTime = date;
+                              });
                             },
+                            currentTime: journalEntryCache.endTime,
+                            locale: LocaleType.en,
                           );
                         },
                         mode: TiledTimeDisplayMode.InProgressMode,
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          width: 48,
-                          height: 48,
-                          color: Colors.white,
-                        ),
-                      ),
                       TiledIconButton(
                         onTap: () {
                           this.delete(
-                              context, stateToDispatchMap, journalEntry);
+                              context, stateToDispatchMap, journalEntryCache);
                         },
                         iconData: Icons.delete,
                         flex: 1,
@@ -152,7 +163,7 @@ class _JournalEditRouteState extends State<JournalEditRoute> {
                       TiledIconButton(
                         onTap: () {
                           this.submit(
-                              context, stateToDispatchMap, journalEntry);
+                              context, stateToDispatchMap, journalEntryCache);
                         },
                         iconData: Icons.check,
                         flex: 1,
@@ -167,31 +178,22 @@ class _JournalEditRouteState extends State<JournalEditRoute> {
                 child: Column(children: [
                   TextField(
                     decoration: InputDecoration(
-                      prefix: Padding(
-                        padding: EdgeInsets.only(
-                          right: 8,
-                          left: 4,
-                        ),
-                        child: Icon(
-                          Icons.edit,
-                          color: Colors.grey[700],
-                          size: 24,
-                        ),
-                      ),
                       alignLabelWithHint: true,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                      contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 16.0),
                       hintText: "Take an action...",
-                      hintStyle:
-                          TextStyle(fontSize: 22, color: Colors.grey[500]),
+                      hintStyle: TextStyle(
+                        fontSize: 22,
+                      ),
                       border: InputBorder.none,
                     ),
                     style: TextStyle(
                       fontSize: 22,
-                      color: Colors.grey[700],
+                      //color: Colors.grey[700],
                     ),
                     autofocus: true,
                     autocorrect: true,
-                    cursorColor: Colors.grey[400],
+                    //cursorColor: Colors.grey[400],
                     cursorWidth: 2.0,
                     enableInteractiveSelection: true,
                     minLines: 1,
@@ -201,6 +203,9 @@ class _JournalEditRouteState extends State<JournalEditRoute> {
                     keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.done,
                     controller: _controller,
+                    onChanged: (value) {
+                      journalEntryCache.act = value;
+                    },
                   ),
                 ]),
               ),

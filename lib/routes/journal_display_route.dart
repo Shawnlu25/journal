@@ -1,18 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:sticky_headers/sticky_headers.dart';
 import 'package:journal/models/journal_entry.dart';
 import 'package:journal/widgets/tiled_dashboard.dart';
-import 'package:journal/widgets/activity_overview.dart';
+import 'package:journal/widgets/journal_entry_overview.dart';
 import 'package:journal/redux.dart';
-import 'package:sticky_headers/sticky_headers.dart';
+import 'package:journal/utils/datetime_display.dart';
 
-class HomeRoute extends StatelessWidget {
+
+class JournalDisplayRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomSheet: Container(
-        color: Colors.white,
+        //color: Colors.white,
         child: TiledDashboard(),
       ),
       body: StoreConnector<JournalState, JournalState>(
@@ -20,40 +22,39 @@ class HomeRoute extends StatelessWidget {
           return store.state;
         },
         builder: (context, journalState) {
-          return MyHomePage(journalEntries: journalState.journalEntries);
+          return _JournalDisplayRoute(journalEntries: journalState.journalEntries);
         },
       ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class _JournalDisplayRoute extends StatefulWidget {
   final List<JournalEntry> journalEntries;
 
-  MyHomePage({Key key, @required this.journalEntries}) : super(key: key);
+  _JournalDisplayRoute({Key key, @required this.journalEntries}) : super(key: key);
 
   @override
-  _MyHomePageState createState() {
-    return _MyHomePageState();
+  _JournalDisplayRouteState createState() {
+    return _JournalDisplayRouteState();
   }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _JournalDisplayRouteState extends State<_JournalDisplayRoute> {
   @override
   void initState() {
     super.initState();
   }
 
-  Widget _buildOverviewList(BuildContext context) {
+  Widget _buildJournalEntryOverviewList(BuildContext context) {
     List<List<JournalEntry>> groups = [];
+    // Assume that journalEntries have already been sorted
     widget.journalEntries.reversed.toList().forEach((data) {
       var startTime = data.startTime;
       if (groups.isNotEmpty) {
         var lastStartTime = groups[groups.length - 1][0].startTime;
 
-        if (startTime.year == lastStartTime.year &&
-            startTime.month == lastStartTime.month &&
-            startTime.day == lastStartTime.day) {
+        if (sameDay(startTime, lastStartTime)) {
           groups[groups.length - 1].add(data);
         } else {
           groups.add([data]);
@@ -70,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
           content: Column(
             children: List.generate(records.length, (j) {
               var i = records.length - 1 - j;
-              return ActivityOverview(
+              return JournalEntryOverview(
                 title: records[i].act,
                 startTime: records[i].startTime,
                 endTime: records[i].endTime,
@@ -94,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return this._buildOverviewList(context);
+    return this._buildJournalEntryOverviewList(context);
   }
 }
 
@@ -111,18 +112,21 @@ Widget _buildHeader(DateTime time) {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Text(
-                ActivityOverview.WeekdayMap[time.weekday],
+                getDayOfWeek(time),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 12,
-                  fontWeight: FontWeight.w300,
+                  //fontWeight: FontWeight.w300,
                 ),
               ),
               Text(
                 //startTime.day.toString(),
                 time.day.toString(),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                style: TextStyle(
+                  fontSize: 18,
+                  //fontWeight: FontWeight.w400,
+                ),
               ),
             ],
           ),

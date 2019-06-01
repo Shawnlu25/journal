@@ -31,6 +31,14 @@ class JournalEntry implements Comparable<JournalEntry> {
     this._startTime = startTime;
   }
 
+  // Constructor for copying an existing entry
+  JournalEntry.copy(JournalEntry e) {
+    _id = e._id;
+    _act = e._act;
+    _startTime = e._startTime;
+    _endTime = e._endTime;
+  }
+
   // ========== Getter & Setters ==========
   String get id => _id;
 
@@ -53,7 +61,7 @@ class JournalEntry implements Comparable<JournalEntry> {
 
   set endTime(DateTime value) {
     if (value != null && value.isBefore(_startTime)) {
-      _endTime = _startTime;
+      _startTime = value;
     } else {
       _endTime = value;
     }
@@ -85,10 +93,10 @@ class JournalEntry implements Comparable<JournalEntry> {
 
   // ============= Other methods ==============
 
-  @override
+  /*@override
   int get hashCode {
     return id.hashCode;
-  }
+  }*/
 
   JournalEntryState getState() {
     final now = new DateTime.now();

@@ -35,7 +35,7 @@ class _TiledDashboardState extends State<TiledDashboard> {
                   text: "Take an action...",
                   textStyle: TextStyle(
                     fontSize: 16,
-                    color: Colors.grey[500],
+                    //color: Colors.grey[500],
                   ),
                 ),
                 TiledIconButton(
@@ -68,11 +68,11 @@ class TiledTextButton extends StatelessWidget {
       flex: flex,
       child: Container(
         height: tileUnitSize,
-        color: Colors.white,
+        //color: Colors.white,
         padding: EdgeInsets.all(0.0),
         child: Material(
           elevation: 0.0,
-          color: Colors.white,
+          //color: Colors.white,
           animationDuration: Duration(milliseconds: 100),
           child: InkWell(
             onTap: onTap,
@@ -104,18 +104,18 @@ class TiledIconButton extends StatelessWidget {
     return Container(
       height: tileUnitSize,
       width: flex == 0 ? tileUnitSize : null,
-      color: Colors.white,
+      //color: Colors.white,
       padding: EdgeInsets.all(0.0),
       child: Material(
         elevation: 0.0,
-        color: Colors.white,
+        //color: Colors.white,
         animationDuration: Duration(milliseconds: 100),
         child: InkWell(
           onTap: onTap,
           child: Center(
             child: Icon(
               iconData,
-              color: Colors.grey[600],
+              //color: Colors.grey[600],
               size: tileUnitSize * iconSizeFactor / 2.0,
             ),
           ),
@@ -137,9 +137,9 @@ class TiledIconButton extends StatelessWidget {
 
 // ============== Text Label ==================
 class TiledTextLabel extends StatelessWidget {
-  String text;
-  int flex;
-  TextStyle textStyle;
+  final String text;
+  final int flex;
+  final TextStyle textStyle;
 
   TiledTextLabel({@required this.text, @required this.flex, this.textStyle});
 
@@ -148,7 +148,7 @@ class TiledTextLabel extends StatelessWidget {
       flex: flex,
       child: Container(
         height: tileUnitSize,
-        color: Colors.white,
+        //color: Colors.white,
         child: Center(
           child: Text(
             text,
@@ -166,10 +166,10 @@ class TiledTextLabel extends StatelessWidget {
 enum TiledTimeDisplayMode { StartMode, EndMode, InProgressMode, Normal }
 
 class TiledTimeDisplay extends StatelessWidget {
-  DateTime dateTime;
-  int flex;
-  VoidCallback onTap;
-  TiledTimeDisplayMode mode;
+  final DateTime dateTime;
+  final int flex;
+  final VoidCallback onTap;
+  final TiledTimeDisplayMode mode;
   TiledTimeDisplay(
       {this.dateTime,
       @required this.flex,
@@ -177,7 +177,6 @@ class TiledTimeDisplay extends StatelessWidget {
       this.mode = TiledTimeDisplayMode.Normal});
 
   Widget _buildTimeDisplay(BuildContext context) {
-    Widget widget;
     switch (this.mode) {
       case TiledTimeDisplayMode.StartMode:
         return Row(
@@ -187,7 +186,7 @@ class TiledTimeDisplay extends StatelessWidget {
               child: Icon(
                 Icons.chevron_right,
                 size: 24,
-                color: Colors.grey[600],
+                //color: Colors.grey[600],
               ),
             ),
             Expanded(
@@ -195,7 +194,7 @@ class TiledTimeDisplay extends StatelessWidget {
                 getDisplayString(this.dateTime),
                 style: TextStyle(
                   fontSize: 16,
-                  color: Colors.grey[600],
+                  //color: Colors.grey[600],
                 ),
                 textAlign: TextAlign.left,
               ),
@@ -212,7 +211,7 @@ class TiledTimeDisplay extends StatelessWidget {
                 getDisplayString(this.dateTime),
                 style: TextStyle(
                   fontSize: 16,
-                  color: Colors.grey[600],
+                  //color: Colors.grey[600],
                 ),
                 textAlign: TextAlign.right,
               ),
@@ -222,7 +221,7 @@ class TiledTimeDisplay extends StatelessWidget {
               child: Icon(
                 Icons.chevron_left,
                 size: 24,
-                color: Colors.grey[600],
+                //color: Colors.grey[600],
               ),
             ),
           ],
@@ -234,7 +233,7 @@ class TiledTimeDisplay extends StatelessWidget {
             getDisplayString(this.dateTime),
             style: TextStyle(
               fontSize: 16,
-              color: Colors.grey[600],
+              //color: Colors.grey[600],
             ),
             textAlign: TextAlign.center,
           ),
@@ -247,149 +246,14 @@ class TiledTimeDisplay extends StatelessWidget {
       flex: flex,
       child: Container(
         height: tileUnitSize,
-        color: Colors.white,
+        //color: Colors.white,
         child: Material(
           elevation: 0.0,
-          color: Colors.white,
+          //color: Colors.white,
           animationDuration: Duration(milliseconds: 100),
           child: InkWell(
             onTap: onTap,
             child: _buildTimeDisplay(context),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class TiledTimeButton extends StatefulWidget {
-  final bool start;
-  TiledTimeButton({@required this.start});
-
-  @override
-  _TiledTimeButtonState createState() => _TiledTimeButtonState();
-}
-
-class _TiledTimeButtonState extends State<TiledTimeButton> {
-  DateTime _timestamp = DateTime.now();
-
-  String formatMinute(int minute) {
-    if (minute.toString().length <= 1) {
-      return "0" + minute.toString();
-    } else {
-      return minute.toString();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      flex: 3,
-      child: Container(
-        height: tileUnitSize,
-        color: Colors.white,
-        child: Material(
-          elevation: 0.0,
-          color: Colors.white,
-          animationDuration: Duration(milliseconds: 100),
-          child: InkWell(
-            onTap: () => {},
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  widget.start
-                      ? Icon(
-                          Icons.chevron_right,
-                          size: 20,
-                          color: Colors.grey[600],
-                        )
-                      : null,
-                  Text(
-                    "${_timestamp.month} / ${_timestamp.day}  ${_timestamp.hour} : ${formatMinute(_timestamp.minute)}",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey[600],
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                  !widget.start
-                      ? Icon(Icons.chevron_left,
-                          size: 20, color: Colors.grey[600])
-                      : null
-                ].where((x) => x != null).toList(),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-//=============== Textfield ===================
-
-typedef void OnChanged(String text);
-
-class TiledTextfield extends StatefulWidget {
-  final OnChanged onChanged;
-  final String text;
-
-  @override
-  TiledTextfield({Key key, this.onChanged, this.text}) : super(key: key);
-
-  @override
-  _TiledTextfield createState() => _TiledTextfield();
-}
-
-class _TiledTextfield extends State<TiledTextfield> {
-  TextEditingController _controller;
-  FocusNode _focusNode;
-
-  @override
-  void initState() {
-    _controller = TextEditingController(text: widget.text);
-    _focusNode = FocusNode();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  Widget build(BuildContext context) {
-    return Expanded(
-      flex: 8,
-      child: Container(
-        height: tileUnitSize * 1,
-        color: Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        child: EditableText(
-          scrollPadding: EdgeInsets.symmetric(vertical: 56.0),
-          // Cursor
-          cursorColor: Colors.grey[400],
-          backgroundCursorColor: Colors.grey[100],
-
-          // Selection
-          enableInteractiveSelection: true,
-          selectionColor: Colors.grey[300],
-          selectionControls: materialTextSelectionControls,
-
-          // Max Lines
-          autofocus: true,
-          maxLines: null,
-          controller: _controller,
-          focusNode: _focusNode,
-
-          onChanged: widget.onChanged,
-
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey[600],
           ),
         ),
       ),

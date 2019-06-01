@@ -58,23 +58,31 @@ JournalState _onJournalAdd(JournalState state, JournalAddAction action) {
 
 JournalState _onJournalDelete(JournalState state, JournalDeleteAction action) {
   List<JournalEntry> journalEntries = state.journalEntries;
-  journalEntries.remove(action.entry);
+  JournalState(
+      journalEntries: journalEntries.map((journalEntry) {
+        if (journalEntry.id == action.entry.id) {
+          return action.entry;
+        } else {
+          return journalEntry;
+        }
+      }).toList());
+  journalEntries.removeWhere((JournalEntry e) => e.id == action.entry.id);
   return JournalState(journalEntries: journalEntries);
 }
 
 JournalState _onJournalModify(JournalState state, JournalModifyAction action) {
   List<JournalEntry> journalEntries = state.journalEntries;
-  return JournalState(
-      journalEntries: journalEntries.map((journalEntry) {
+  List<JournalEntry> newEntries = journalEntries.map((journalEntry) {
     if (journalEntry.id == action.entry.id) {
       return action.entry;
     } else {
       return journalEntry;
     }
-  }).toList());
+  }).toList();
+  newEntries.sort();
+  return JournalState(journalEntries: newEntries);
 }
 
 final initialState = JournalState(journalEntries: [
-  JournalEntry("Hello World", DateTime(2019, 5, 31, 11, 0),
-      DateTime(2019, 5, 31, 11, 30))
+  JournalEntry("Hello World", DateTime.now(), DateTime.now())
 ]);

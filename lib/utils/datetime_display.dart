@@ -1,8 +1,25 @@
 import 'package:intl/intl.dart';
 
-final timeOnlyFormatter = new DateFormat('HH : mm');
-final dayOfWeekTimeFormatter = new DateFormat('EEE HH : mm');
-final dateTimeFormatter = new DateFormat('MMM d HH : mm');
+final _timeOnlyFormatter = new DateFormat('HH : mm');
+final _timeOnlyCompactFormatter = new DateFormat('HH:mm');
+final _dayOfWeekTimeFormatter = new DateFormat('EEE HH : mm');
+final _dayOfWeekFormatter = new DateFormat('EEE');
+final _dateTimeFormatter = new DateFormat('MMM d HH : mm');
+final _dateTimeCompactFormatter = new DateFormat('MMM d HH : mm');
+
+String getDayOfWeek(DateTime timestamp) {
+  return _dayOfWeekFormatter.format(timestamp);
+}
+
+String getPairDisplayString(DateTime d1, DateTime d2) {
+  if (d2 == null) {
+    return _timeOnlyCompactFormatter.format(d1);
+  }
+  if (sameDay(d1, d2) || nextDay(d1, d2)) {
+    return _timeOnlyCompactFormatter.format(d1) + " - " + _timeOnlyCompactFormatter.format(d2);
+  }
+  return _timeOnlyCompactFormatter.format(d1) + " - " + _dateTimeCompactFormatter.format(d2);
+}
 
 String getDisplayString(DateTime timestamp) {
   DateTime cur = DateTime.now();
@@ -11,21 +28,21 @@ String getDisplayString(DateTime timestamp) {
   }
 
   if (sameDay(cur, timestamp)) {
-    return timeOnlyFormatter.format(timestamp);
+    return _timeOnlyFormatter.format(timestamp);
   }
 
   if (nextDay(cur, timestamp)) {
-    return "TMRO " + timeOnlyFormatter.format(timestamp);
+    return "TMRO " + _timeOnlyFormatter.format(timestamp);
   }
 
   if (prevDay(cur, timestamp)) {
-    return "YDAY " + timeOnlyFormatter.format(timestamp);
+    return "YDAY " + _timeOnlyFormatter.format(timestamp);
   }
 
   if (sameWeek(cur, timestamp)) {
-    return dayOfWeekTimeFormatter.format(timestamp);
+    return _dayOfWeekTimeFormatter.format(timestamp);
   }
-  return dateTimeFormatter.format(timestamp);
+  return _dateTimeFormatter.format(timestamp);
 }
 
 bool sameWeek(DateTime d1, DateTime d2) {
