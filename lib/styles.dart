@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 const Color darkRuby = const Color(0xFF9A2617);
-const Color lily = const Color(0xFFF5F6F7);
+const Color lily = Colors.white;//const Color(0xFFF5F6F7);
 const Color raven = const Color(0xFF373D3F);
 
 const ColorScheme journalLightColorScheme = ColorScheme(
@@ -47,19 +47,19 @@ ThemeData journalLightThemeData = ThemeData.light().copyWith(
   dividerColor: raven,
   //focusColor: null,
   //hoverColor: null,
-  //highlightColor: Colors.grey[500],
-  //splashColor: Colors.grey[400],
+  highlightColor: Colors.grey[400],
+  splashColor: Colors.grey[400],
   //splashFactory: null,
   //selectedRowColor: Colors.grey[500],
   //unselectedWidgetColor: null,
   //disabledColor: null,
   //buttonTheme: null,
-  //buttonColor: null,
+  buttonColor: lily,
   //secondaryHeaderColor: null,
-  //textSelectionColor: Colors.blueGrey[400],
+  textSelectionColor: Colors.blueGrey[300],
   cursorColor: raven,
-  //textSelectionHandleColor: null,
-  //backgroundColor: null,
+  textSelectionHandleColor: Colors.blueGrey[400],
+  backgroundColor: lily,
   //dialogBackgroundColor: null,
   //indicatorColor: null,
   //hintColor: Colors.green[300],
@@ -87,5 +87,7 @@ ThemeData journalLightThemeData = ThemeData.light().copyWith(
   //typography: null,
   //cupertinoOverrideTheme: null,
   //snackBarTheme: null,
-  //bottomSheetTheme: null,
+  bottomSheetTheme: BottomSheetThemeData(
+    backgroundColor: lily,
+  ),
 );

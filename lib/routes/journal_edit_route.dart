@@ -131,6 +131,11 @@ class _JournalEditRouteState extends State<JournalEditRoute> {
                             locale: LocaleType.en,
                           );
                         },
+                        onDoubleTap: () {
+                          setState(() {
+                            journalEntryCache.endTime = DateTime.now();
+                          });
+                        },
                         mode: TiledTimeDisplayMode.StartMode,
                       ),
                       TiledTimeDisplay(
@@ -148,6 +153,11 @@ class _JournalEditRouteState extends State<JournalEditRoute> {
                             currentTime: journalEntryCache.endTime,
                             locale: LocaleType.en,
                           );
+                        },
+                        onDoubleTap: () {
+                          setState(() {
+                            journalEntryCache.endTime = DateTime.now();
+                          });
                         },
                         mode: TiledTimeDisplayMode.InProgressMode,
                       ),

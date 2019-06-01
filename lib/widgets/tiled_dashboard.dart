@@ -92,12 +92,18 @@ class TiledTextButton extends StatelessWidget {
 
 class TiledIconButton extends StatelessWidget {
   final VoidCallback onTap;
+  final VoidCallback onDoubleTap;
   final IconData iconData;
   final int flex;
   final double iconSizeFactor;
 
   const TiledIconButton(
-      {Key key, this.onTap, this.iconData, this.flex, this.iconSizeFactor})
+      {Key key,
+      this.onTap,
+      this.iconData,
+      this.flex,
+      this.iconSizeFactor,
+      this.onDoubleTap})
       : super(key: key);
 
   Widget _buildInnerWidget(BuildContext context) {
@@ -112,6 +118,7 @@ class TiledIconButton extends StatelessWidget {
         animationDuration: Duration(milliseconds: 100),
         child: InkWell(
           onTap: onTap,
+          onDoubleTap: onDoubleTap,
           child: Center(
             child: Icon(
               iconData,
@@ -170,11 +177,15 @@ class TiledTimeDisplay extends StatelessWidget {
   final int flex;
   final VoidCallback onTap;
   final TiledTimeDisplayMode mode;
-  TiledTimeDisplay(
-      {this.dateTime,
-      @required this.flex,
-      this.onTap,
-      this.mode = TiledTimeDisplayMode.Normal});
+  final VoidCallback onDoubleTap;
+
+  TiledTimeDisplay({
+    this.dateTime,
+    @required this.flex,
+    this.onTap,
+    this.onDoubleTap,
+    this.mode = TiledTimeDisplayMode.Normal,
+  });
 
   Widget _buildTimeDisplay(BuildContext context) {
     switch (this.mode) {
@@ -253,6 +264,7 @@ class TiledTimeDisplay extends StatelessWidget {
           animationDuration: Duration(milliseconds: 100),
           child: InkWell(
             onTap: onTap,
+            onDoubleTap: onDoubleTap,
             child: _buildTimeDisplay(context),
           ),
         ),
