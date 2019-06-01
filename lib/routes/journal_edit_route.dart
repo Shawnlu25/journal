@@ -41,32 +41,37 @@ class _JournalEditRouteState extends State<JournalEditRoute> {
     super.dispose();
   }
 
+  void popFromContext(BuildContext context) {
+    FocusScope.of(context).requestFocus(new FocusNode());
+    Navigator.pop(context);
+  }
+
   void submit(BuildContext context, _StateToDispatchMap stateToDispatchMap,
       JournalEntry oldJournalEntry) {
     final newAct = _controller.text ?? "";
     if (newAct.length == 0) {
-      Navigator.pop(context);
+      popFromContext(context);
     } else if (newEntry) {
       stateToDispatchMap.addJournal(
           oldJournalEntry); //JournalEntry(newAct, DateTime.now(), DateTime.now()));
-      Navigator.pop(context);
+      popFromContext(context);
     } else {
       // Modify existing journalEntry
       final newJournalEntry = JournalEntry(
           newAct, oldJournalEntry.startTime, oldJournalEntry.endTime,
           id: oldJournalEntry.id);
       stateToDispatchMap.modifyJournal(oldJournalEntry);
-      Navigator.pop(context);
+      popFromContext(context);
     }
   }
 
   void delete(BuildContext context, _StateToDispatchMap stateToDispatchMap,
       JournalEntry oldJournalEntry) {
     if (oldJournalEntry == null) {
-      Navigator.pop(context);
+      popFromContext(context);
     } else {
       stateToDispatchMap._deleteJournal(oldJournalEntry);
-      Navigator.pop(context);
+      popFromContext(context);
     }
   }
 
