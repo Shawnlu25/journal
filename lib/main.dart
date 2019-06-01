@@ -9,25 +9,6 @@ import 'package:redux_persist/redux_persist.dart';
 import 'package:redux_persist_flutter/redux_persist_flutter.dart';
 import 'package:journal/styles.dart';
 
-TextTheme _buildJournalTextTheme(TextTheme base) {
-  return base
-      .copyWith(
-        headline: base.headline.copyWith(
-          fontWeight: FontWeight.w500,
-        ),
-        title: base.title.copyWith(fontSize: 18.0),
-        caption: base.caption.copyWith(
-          fontWeight: FontWeight.w400,
-          fontSize: 14.0,
-        ),
-      )
-      .apply(
-        //fontFamily: 'Noto Sans',
-        displayColor: Colors.grey[800],
-        bodyColor: Colors.grey[800],
-      );
-}
-
 
 void main() async {
   final persistor = Persistor<JournalState>(

@@ -18,7 +18,6 @@ class _TiledDashboardState extends State<TiledDashboard> {
   Widget build(BuildContext context) {
     return Container(
       height: _height,
-      //duration: Duration(milliseconds: 100),
       child: Align(
         alignment: Alignment.topLeft,
         child: Column(
@@ -77,7 +76,7 @@ class TiledTextButton extends StatelessWidget {
           child: InkWell(
             onTap: onTap,
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.only(left: 16.0, top: 8.0),
               child: Text(
                 text,
                 style: textStyle,

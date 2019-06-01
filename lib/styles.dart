@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 const Color darkRuby = const Color(0xFF9A2617);
 const Color lily = Colors.white;//const Color(0xFFF5F6F7);
 const Color raven = const Color(0xFF373D3F);
+const Color asher = const Color(0xFF555F61);
 
 const ColorScheme journalLightColorScheme = ColorScheme(
   primary: lily,
@@ -21,16 +22,31 @@ const ColorScheme journalLightColorScheme = ColorScheme(
 );
 
 const IconThemeData journalLightPrimaryIconThemeData = IconThemeData(
-  color: raven,
+  color: asher,
 );
 
 const IconThemeData journalLightSecondaryIconThemeData = IconThemeData(
   color: lily,
 );
 
-const TextTheme journalLightTextTheme = TextTheme(
-
-);
+TextTheme _buildJournalTextTheme(TextTheme base) {
+  return base
+      .copyWith(
+    headline: base.headline.copyWith(
+      fontWeight: FontWeight.w500,
+    ),
+    title: base.title.copyWith(fontSize: 18.0),
+    caption: base.caption.copyWith(
+      fontWeight: FontWeight.w400,
+      fontSize: 14.0,
+    ),
+  )
+      .apply(
+    fontFamily: 'NotoSansSC',
+    displayColor: raven,
+    bodyColor: asher,
+  );
+}
 
 ThemeData journalLightThemeData = ThemeData.light().copyWith(
   brightness: Brightness.light,
@@ -47,8 +63,8 @@ ThemeData journalLightThemeData = ThemeData.light().copyWith(
   dividerColor: raven,
   //focusColor: null,
   //hoverColor: null,
-  highlightColor: Colors.grey[400],
-  splashColor: Colors.grey[400],
+  highlightColor: Colors.grey[200],
+  splashColor: Colors.grey[200],
   //splashFactory: null,
   //selectedRowColor: Colors.grey[500],
   //unselectedWidgetColor: null,
@@ -62,14 +78,14 @@ ThemeData journalLightThemeData = ThemeData.light().copyWith(
   backgroundColor: lily,
   //dialogBackgroundColor: null,
   //indicatorColor: null,
-  //hintColor: Colors.green[300],
+  hintColor: Colors.grey[400],
   //errorColor: darkRuby,
   //toggleableActiveColor: null,
-  //textTheme: null,
+  textTheme: _buildJournalTextTheme(ThemeData.light().textTheme),
   //primaryTextTheme: null,
   //accentTextTheme: null,
   //inputDecorationTheme: null,
-  //iconTheme: null,
+  iconTheme: journalLightPrimaryIconThemeData,
   primaryIconTheme: journalLightPrimaryIconThemeData,
   accentIconTheme: journalLightSecondaryIconThemeData,
   //sliderTheme: null,
