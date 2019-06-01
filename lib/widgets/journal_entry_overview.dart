@@ -26,7 +26,7 @@ class JournalEntryOverview extends StatelessWidget {
           border: Border(
             left: BorderSide(
               width: 4.0,
-              color: Color.fromRGBO(50, 10, 10, 100),
+              color: Colors.blueGrey,
             ),
           ),
         ),

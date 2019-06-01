@@ -45,6 +45,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           title: '',
           theme: journalLightThemeData,
+          debugShowCheckedModeBanner: false,
           routes: {
             "/": (context) => JournalDisplayRoute(),
             "/edit": (context) => JournalEditRoute()

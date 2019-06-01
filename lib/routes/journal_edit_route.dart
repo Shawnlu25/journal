@@ -205,7 +205,6 @@ class _JournalEditRouteState extends State<JournalEditRoute> {
                     autocorrect: true,
                     //cursorColor: Colors.grey[400],
                     cursorWidth: 2.0,
-                    enableInteractiveSelection: true,
                     minLines: 1,
                     maxLines: 4,
                     maxLength: 60,

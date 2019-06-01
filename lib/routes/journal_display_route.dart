@@ -13,7 +13,7 @@ class JournalDisplayRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomSheet: Container(
+      bottomNavigationBar: Container(
         //color: Colors.white,
         child: TiledDashboard(),
       ),
@@ -85,7 +85,7 @@ class _JournalDisplayRouteState extends State<_JournalDisplayRoute> {
 
     return ListView.builder(
       reverse: true,
-      padding: EdgeInsets.only(bottom: 48),
+      padding: EdgeInsets.only(top: 96.0, bottom: 48),
       itemBuilder: (_, i) {
         return list[i];
       },
