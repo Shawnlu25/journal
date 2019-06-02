@@ -4,8 +4,8 @@ final _timeOnlyFormatter = new DateFormat('HH : mm');
 final _timeOnlyCompactFormatter = new DateFormat('HH:mm');
 final _dayOfWeekTimeFormatter = new DateFormat('EEE HH : mm');
 final _dayOfWeekFormatter = new DateFormat('EEE');
-final _dateTimeFormatter = new DateFormat('MMM d HH : mm');
-final _dateTimeCompactFormatter = new DateFormat('MMM d HH : mm');
+final _dateTimeFormatter = new DateFormat('MM / d HH : mm');
+final _dateTimeCompactFormatter = new DateFormat('MMM d HH:mm');
 
 String getDayOfWeek(DateTime timestamp) {
   return _dayOfWeekFormatter.format(timestamp);

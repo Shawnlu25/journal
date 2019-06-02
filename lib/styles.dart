@@ -89,7 +89,7 @@ ThemeData journalLightThemeData = ThemeData.light().copyWith(
   primaryIconTheme: journalLightPrimaryIconThemeData,
   accentIconTheme: journalLightSecondaryIconThemeData,
   //sliderTheme: null,
-  //tabBarTheme: null,
+  //tabBarTheme: null
   //cardTheme: null,
   //chipTheme: null,
   //platform: TargetPlatform.android,

@@ -143,7 +143,7 @@ class _JournalEditRouteState extends State<JournalEditRoute> {
                         },
                         onDoubleTap: () {
                           setState(() {
-                            journalEntryCache.endTime = DateTime.now();
+                            journalEntryCache.startTime = DateTime.now();
                           });
                         },
                         mode: TiledTimeDisplayMode.StartMode,

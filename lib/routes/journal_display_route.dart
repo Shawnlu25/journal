@@ -8,13 +8,11 @@ import 'package:journal/widgets/journal_entry_overview.dart';
 import 'package:journal/redux.dart';
 import 'package:journal/utils/datetime_display.dart';
 
-
 class JournalDisplayRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: Container(
-        //color: Colors.white,
         child: TiledDashboard(),
       ),
       body: StoreConnector<JournalState, JournalState>(
@@ -22,7 +20,8 @@ class JournalDisplayRoute extends StatelessWidget {
           return store.state;
         },
         builder: (context, journalState) {
-          return _JournalDisplayRoute(journalEntries: journalState.journalEntries);
+          return _JournalDisplayRoute(
+              journalEntries: journalState.journalEntries);
         },
       ),
     );
@@ -32,7 +31,8 @@ class JournalDisplayRoute extends StatelessWidget {
 class _JournalDisplayRoute extends StatefulWidget {
   final List<JournalEntry> journalEntries;
 
-  _JournalDisplayRoute({Key key, @required this.journalEntries}) : super(key: key);
+  _JournalDisplayRoute({Key key, @required this.journalEntries})
+      : super(key: key);
 
   @override
   _JournalDisplayRouteState createState() {
