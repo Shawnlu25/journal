@@ -55,14 +55,9 @@ class _JournalEditRouteState extends State<JournalEditRoute> {
     if (newAct.length == 0) {
       popFromContext(context);
     } else if (newEntry) {
-      stateToDispatchMap.addJournal(
-          oldJournalEntry); //JournalEntry(newAct, DateTime.now(), DateTime.now()));
+      stateToDispatchMap.addJournal(oldJournalEntry);
       popFromContext(context);
     } else {
-      // Modify existing journalEntry
-      final newJournalEntry = JournalEntry(
-          newAct, oldJournalEntry.startTime, oldJournalEntry.endTime,
-          id: oldJournalEntry.id);
       stateToDispatchMap.modifyJournal(oldJournalEntry);
       popFromContext(context);
     }
@@ -107,14 +102,16 @@ class _JournalEditRouteState extends State<JournalEditRoute> {
                 store.dispatch(JournalDeleteAction(journalEntry))),
         builder: (context, stateToDispatchMap) => Scaffold(
               appBar: AppBar(
+                automaticallyImplyLeading: false,
                 leading: Builder(
                   builder: (BuildContext context) {
-                    return IconButton(
-                      icon: Icon(Icons.arrow_back),
-                      onPressed: () {
-                        this.submit(
-                            context, stateToDispatchMap, journalEntryCache);
+                    return TiledIconButton(
+                      onTap: () {
+                        popFromContext(context);
                       },
+                      iconData: Icons.close,
+                      flex: 0,
+                      iconSizeFactor: 1.0,
                     );
                   },
                 ),
