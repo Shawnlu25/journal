@@ -26,17 +26,20 @@ class _StateToDispatchMap {
 
 class _JournalEditRouteState extends State<JournalEditRoute> {
   TextEditingController _controller;
+  FocusNode _actEditorFocusNode;
   JournalEntry journalEntryCache;
   bool newEntry;
 
   @override
   void initState() {
     _controller = TextEditingController();
+    _actEditorFocusNode = FocusNode();
     super.initState();
   }
 
   @override
   void dispose() {
+    _actEditorFocusNode.dispose();
     _controller.dispose();
     super.dispose();
   }
@@ -85,6 +88,7 @@ class _JournalEditRouteState extends State<JournalEditRoute> {
         journalEntryCache = JournalEntry.copy(journalEntry);
       } else {
         newEntry = true;
+        FocusScope.of(context).requestFocus(_actEditorFocusNode);
         journalEntryCache = JournalEntry.createEntry(DateTime.now());
       }
     }
@@ -211,7 +215,7 @@ class _JournalEditRouteState extends State<JournalEditRoute> {
                       fontSize: 22,
                       //color: Colors.grey[700],
                     ),
-                    autofocus: true,
+                    focusNode: _actEditorFocusNode,
                     autocorrect: true,
                     //cursorColor: Colors.grey[400],
                     cursorWidth: 2.0,
