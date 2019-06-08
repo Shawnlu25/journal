@@ -16,13 +16,15 @@ class JournalDisplayRoute extends StatelessWidget {
         child: TiledDashboard(),
       ),
       body: SafeArea(
-        child: StoreConnector<JournalState, JournalState>(
-          converter: (store) {
-            return store.state;
-          },
-          builder: (context, journalState) {
+        child: StoreConnector<JournalState, _StateToDispatchMap>(
+          converter: (store) => _StateToDispatchMap(
+              (journalEntry) => store.dispatch(JournalAddAction(journalEntry)),
+              () => store.state.journalEntries),
+          builder: (context, stateToDispatchMap) {
             return _JournalDisplayRoute(
-                journalEntries: journalState.journalEntries);
+              journalEntries: stateToDispatchMap.getJournal(),
+              stateToDispatchMap: stateToDispatchMap,
+            );
           },
         ),
       ),
@@ -30,10 +32,24 @@ class JournalDisplayRoute extends StatelessWidget {
   }
 }
 
+typedef void _AddJournal(JournalEntry journalEntry);
+typedef List<JournalEntry> _GetJournal();
+
+class _StateToDispatchMap {
+  final _GetJournal getJournal;
+  final _AddJournal addJournal;
+
+  _StateToDispatchMap(this.addJournal, this.getJournal);
+}
+
 class _JournalDisplayRoute extends StatefulWidget {
   final List<JournalEntry> journalEntries;
+  final _StateToDispatchMap stateToDispatchMap;
 
-  _JournalDisplayRoute({Key key, @required this.journalEntries})
+  _JournalDisplayRoute(
+      {Key key,
+      @required this.journalEntries,
+      @required this.stateToDispatchMap})
       : super(key: key);
 
   @override
@@ -48,7 +64,15 @@ class _JournalDisplayRouteState extends State<_JournalDisplayRoute> {
     super.initState();
   }
 
-  Widget _buildJournalEntryOverviewList(BuildContext context) {
+  void addEntryWithSameAct(BuildContext context,
+      _StateToDispatchMap stateToDispatchMap, JournalEntry oldJournalEntry) {
+    JournalEntry e = JournalEntry.createEntry(DateTime.now());
+    e.act = oldJournalEntry.act;
+    stateToDispatchMap.addJournal(e);
+  }
+
+  Widget _buildJournalEntryOverviewList(
+      BuildContext context, _StateToDispatchMap stateToDispatchMap) {
     List<List<JournalEntry>> groups = [];
     // Assume that journalEntries have already been sorted
     widget.journalEntries.reversed.toList().forEach((data) {
@@ -80,6 +104,10 @@ class _JournalDisplayRouteState extends State<_JournalDisplayRoute> {
                 onTap: () {
                   Navigator.pushNamed(context, "/edit", arguments: records[i]);
                 },
+                onDoubleTap: () {
+                  this.addEntryWithSameAct(
+                      context, stateToDispatchMap, records[i]);
+                },
               );
             }),
           ));
@@ -97,7 +125,8 @@ class _JournalDisplayRouteState extends State<_JournalDisplayRoute> {
 
   @override
   Widget build(BuildContext context) {
-    return this._buildJournalEntryOverviewList(context);
+    return this
+        ._buildJournalEntryOverviewList(context, widget.stateToDispatchMap);
   }
 }
 
@@ -118,7 +147,6 @@ Widget _buildHeader(DateTime time) {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 12,
-                  //fontWeight: FontWeight.w300,
                 ),
               ),
               Text(
@@ -127,7 +155,6 @@ Widget _buildHeader(DateTime time) {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 18,
-                  //fontWeight: FontWeight.w400,
                 ),
               ),
             ],

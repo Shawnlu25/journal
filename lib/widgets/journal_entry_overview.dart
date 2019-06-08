@@ -10,12 +10,14 @@ class JournalEntryOverview extends StatelessWidget {
   final DateTime startTime;
   final DateTime endTime;
   final OnTap onTap;
+  final VoidCallback onDoubleTap;
 
   JournalEntryOverview(
       {@required this.startTime,
       @required this.endTime,
       @required this.title,
-      @required this.onTap});
+      @required this.onTap,
+      @required this.onDoubleTap});
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +34,10 @@ class JournalEntryOverview extends StatelessWidget {
         ),
         child: Material(
           elevation: 0.0,
-          //color: Colors.white,
           animationDuration: Duration(milliseconds: 100),
           child: InkWell(
             onTap: this.onTap,
+            onDoubleTap: this.onDoubleTap,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(8.0, 4.0, 0.0, 4.0),
               child: Column(
@@ -45,8 +47,6 @@ class JournalEntryOverview extends StatelessWidget {
                     title,
                     style: TextStyle(
                       fontSize: 16,
-                      //fontWeight: FontWeight.w400,
-                      //color: Colors.grey[700]
                     ),
                   ),
                   Container(height: 4),
@@ -54,8 +54,6 @@ class JournalEntryOverview extends StatelessWidget {
                     getPairDisplayString(startTime, endTime),
                     style: TextStyle(
                       fontSize: 14,
-                      //color: Colors.grey[700],
-                      //fontWeight: FontWeight.w300
                     ),
                   )
                 ],
