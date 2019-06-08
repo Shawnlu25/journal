@@ -62,9 +62,8 @@ class JournalEntry implements Comparable<JournalEntry> {
   set endTime(DateTime value) {
     if (value != null && value.isBefore(_startTime)) {
       _startTime = value;
-    } else {
-      _endTime = value;
     }
+    _endTime = value;
   }
 
   // ============= Comparable =================

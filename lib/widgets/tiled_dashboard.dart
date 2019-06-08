@@ -202,7 +202,7 @@ class TiledTimeDisplay extends StatelessWidget {
             Expanded(
               child: Text(
                 getDisplayString(this.dateTime),
-                style: TextStyle(
+                style: TextStyle (
                   fontSize: 16,
                   //color: Colors.grey[600],
                 ),
