@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:journal/utils/datetime_display.dart';
+import 'package:journal/utils/datetime_util.dart';
 import 'package:flutter/widgets.dart';
 
 final double tileUnitSize = 48;

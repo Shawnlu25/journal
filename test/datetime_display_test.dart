@@ -1,4 +1,4 @@
-import 'package:journal/utils/datetime_display.dart';
+import 'package:journal/utils/datetime_util.dart';
 import 'package:test/test.dart';
 
 final current = DateTime.now();

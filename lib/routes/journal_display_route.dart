@@ -6,7 +6,7 @@ import 'package:journal/models/journal_entry.dart';
 import 'package:journal/widgets/tiled_dashboard.dart';
 import 'package:journal/widgets/journal_entry_overview.dart';
 import 'package:journal/redux.dart';
-import 'package:journal/utils/datetime_display.dart';
+import 'package:journal/utils/datetime_util.dart';
 
 class JournalDisplayRoute extends StatelessWidget {
   @override

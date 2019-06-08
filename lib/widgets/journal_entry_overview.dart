@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:journal/utils/datetime_display.dart';
+import 'package:journal/utils/datetime_util.dart';
 
 final double minHeight = 56;
 
