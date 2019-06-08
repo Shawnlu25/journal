@@ -15,14 +15,16 @@ class JournalDisplayRoute extends StatelessWidget {
       bottomNavigationBar: Container(
         child: TiledDashboard(),
       ),
-      body: StoreConnector<JournalState, JournalState>(
-        converter: (store) {
-          return store.state;
-        },
-        builder: (context, journalState) {
-          return _JournalDisplayRoute(
-              journalEntries: journalState.journalEntries);
-        },
+      body: SafeArea(
+        child: StoreConnector<JournalState, JournalState>(
+          converter: (store) {
+            return store.state;
+          },
+          builder: (context, journalState) {
+            return _JournalDisplayRoute(
+                journalEntries: journalState.journalEntries);
+          },
+        ),
       ),
     );
   }
